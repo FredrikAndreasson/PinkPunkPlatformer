@@ -11,9 +11,13 @@ public class PlayerMovement : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private float dirX;
     private MovementState currentMovementState;
-    [SerializeField] private float jumpForce = 14f;
-    [SerializeField] private float dashForce = 22f;
-    [SerializeField] private float moveSpeed = 6f;
+    [SerializeField] private float jumpForce = 15f;
+    [SerializeField] private float moveSpeed = 10f;
+
+    [SerializeField] private float dashLength = 4f;
+    [SerializeField] private float dashTimer = 0f;
+    [SerializeField] private float dashTimerLength = 0.5f;
+    private bool dashAvailable = false;
     [SerializeField] private LayerMask ground;
     [SerializeField] private AudioSource jumpSFX;
     [SerializeField] private AudioSource dashSFX;
@@ -22,12 +26,11 @@ public class PlayerMovement : MonoBehaviour
     //enum for storing different movement states
     private enum MovementState
     {
-        idling,
-        running,
-        jumping,
-        falling,
-        dashing,
-        doubleJumping
+        idling, //0
+        running, //1
+        jumping, //2
+        falling, //3
+        dashing, //4
     }
 
 
@@ -44,41 +47,94 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        dirX = Input.GetAxisRaw("Horizontal");
-        body.velocity = new Vector2(dirX * moveSpeed, body.velocity.y);
-        if (Input.GetButtonDown("Jump")) 
-        {
-            Jump();
-        }
+        //check if direction pressed
+        HandleMovement();
+        //check if jump pressed
+        HandleJump();
+        //orient player
         LookInMouseDirection();
-        if (Input.GetButton("Fire1"))
-        {
-            //dashSFX.Play();
-            body.velocity = new Vector2(dashForce, body.velocity.y);
-        }
+        //check if dash pressed
+        HandleDash();
+        //update animation
         UpdateAnimationState();
         
     }
-    //checks what time of jump to perform
-    private void Jump()
+    //check for horizontal movement
+    private void HandleMovement()
     {
-        if(IsOnGround())
+        dirX = Input.GetAxisRaw("Horizontal");
+        body.velocity = new Vector2(dirX * moveSpeed, body.velocity.y);
+/*
+        if (dirX != 0)
         {
-            //jumpSFX.Play();
-            body.velocity = new Vector2(body.velocity.x, jumpForce);
-            return;
+            currentMovementState = MovementState.running;
         }
-        if (doubleJumpAvailable && (currentMovementState == MovementState.jumping || currentMovementState == MovementState.falling))
+*/
+    }
+
+    //checks what time of jump to perform
+    private void HandleJump()
+    {
+        if (Input.GetButtonDown("Jump"))
         {
-            //jumpSFX.Play();
-            body.velocity = new Vector2(body.velocity.x, jumpForce);
-            doubleJumpAvailable = false;
-            animator.SetTrigger("doubleJump");
+            if (IsOnGround())
+            {
+                //jumpSFX.Play();
+                body.velocity = new Vector2(body.velocity.x, jumpForce);
+                doubleJumpAvailable = true;
+            }
+            else if (doubleJumpAvailable)
+            {
+                //jumpSFX.Play();
+                body.velocity = new Vector2(body.velocity.x, jumpForce);
+                doubleJumpAvailable = false;
+                //animation only triggers if double jumping
+                animator.SetTrigger("doubleJump");
+            }
         }
 
     }
+    //handle dashing countdown
+    private void HandleDash ()
+    {
+       if (dashAvailable)
+        {
+            if (Input.GetButton("Fire1"))
+            {
+                dashTimer = dashTimerLength;
+                dashAvailable = false;
+                animator.SetTrigger("dash");
+                animator.ResetTrigger("dashRecharged");
+                Dash();
+            }
+        }
+       else
+        {
+            dashTimer -= Time.deltaTime;
+            if (dashTimer < 0)
+            {
+                dashAvailable = true;
+                animator.SetTrigger("dashRecharged");
+                animator.ResetTrigger("dash");
+            }
+        }
+        
+    }
+    //dash in direction player is facing
+    private void Dash ()
+    {
+        if (!spriteRenderer.flipX) //if facing right
+        {
+            transform.position = new Vector2(transform.position.x + dashLength, transform.position.y);
+        }
+        else // facing left
+        {
+            transform.position = new Vector2(transform.position.x - dashLength, transform.position.y);
+        }
+
+    }
+
     //Orients player sprite in mouse's direction
-    //Sets dash force to same direction
     private void LookInMouseDirection()
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -88,12 +144,10 @@ public class PlayerMovement : MonoBehaviour
         if (angle < 0.1f)
         {
             spriteRenderer.flipX = false;
-            dashForce = Math.Abs(dashForce);
         }
         else
         {
             spriteRenderer.flipX = true;
-            dashForce = -(Math.Abs(dashForce));
         }
     }
  
@@ -112,7 +166,7 @@ public class PlayerMovement : MonoBehaviour
             //spriteRenderer.flipX = true;
             currentMovementState = MovementState.running;
         }
-        else //if still
+        else if (body.velocity.x == 0 && body.velocity.y == 0)//if still
         {
             currentMovementState = MovementState.idling;
         }
@@ -135,9 +189,8 @@ public class PlayerMovement : MonoBehaviour
     private bool IsOnGround()
     {
         bool onGround = false;
-        if(Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.2f, ground))
+        if(Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, ground))
         {
-            doubleJumpAvailable = true;
             onGround = true;
         }
         return onGround;
