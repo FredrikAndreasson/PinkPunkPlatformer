@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -13,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     private MovementState currentMovementState;
     [SerializeField] private float jumpForce = 15f;
     [SerializeField] private float moveSpeed = 10f;
-
+    [SerializeField] private float dashSpeed = 5f;
     [SerializeField] private float dashLength = 4f;
     [SerializeField] private float dashTimer = 0f;
     [SerializeField] private float dashTimerLength = 0.5f;
@@ -22,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private AudioSource jumpSFX;
     [SerializeField] private AudioSource dashSFX;
     private bool doubleJumpAvailable;
+    [SerializeField] private Transform dashEffect;
 
     //enum for storing different movement states
     private enum MovementState
@@ -99,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
     {
        if (dashAvailable)
         {
-            if (Input.GetButton("Fire1"))
+            if (Input.GetButton("Fire1")/* && CanDash()*/)
             {
                 dashTimer = dashTimerLength;
                 dashAvailable = false;
@@ -110,8 +113,11 @@ public class PlayerMovement : MonoBehaviour
         }
        else
         {
-            dashTimer -= Time.deltaTime;
-            if (dashTimer < 0)
+            if (dashTimer >=0)
+            {
+                dashTimer -= Time.deltaTime;
+            }
+            else
             {
                 dashAvailable = true;
                 animator.SetTrigger("dashRecharged");
@@ -120,18 +126,65 @@ public class PlayerMovement : MonoBehaviour
         }
         
     }
-    //dash in direction player is facing
-    private void Dash ()
+
+    private bool CanDash()
     {
+        Vector2 facingDirection;
+        bool canDash;
         if (!spriteRenderer.flipX) //if facing right
         {
-            transform.position = new Vector2(transform.position.x + dashLength, transform.position.y);
+            facingDirection = Vector2.right;
         }
         else // facing left
         {
-            transform.position = new Vector2(transform.position.x - dashLength, transform.position.y);
+            facingDirection = Vector2.left;
         }
+        canDash = Physics2D.Raycast(transform.position, facingDirection, 1f).collider == null;
+        if (canDash)
+        {
+            Debug.Log("Can dash!");
+        }
+        else
+        {
+            Debug.Log("No Dash :(");
+        }
+        return canDash;
+    }
 
+    //dash in direction player is facing
+    private void Dash ()
+    {
+        float directedDashLength;
+        bool spriteFlipped = spriteRenderer.flipX;
+        if (!spriteFlipped) //if facing right
+        {
+            directedDashLength = dashLength;
+        }
+        else // facing left
+        {
+            directedDashLength = -dashLength;
+        }
+        Vector2 initialPosition = transform.position;
+        Vector2 finalPosition = new Vector2(transform.position.x + directedDashLength, transform.position.y);
+        transform.position = Vector2.MoveTowards(transform.position, finalPosition, dashSpeed);
+
+        Transform dashEffectTransform = Instantiate(dashEffect, initialPosition, Quaternion.identity);
+        
+        StartCoroutine(FadeOut(dashEffectTransform, 1f));
+    }
+    IEnumerator FadeOut(Transform trans, float duration)
+    {
+        float counter = 0;
+        while(counter < duration)
+        {
+            counter += Time.deltaTime;
+            float alpha = Mathf.Lerp(1f, 0f, counter/duration);
+            Color color = transform.GetComponent<Renderer>().material.color;
+            trans.GetComponent<Renderer>().material.color = new Color(color.r, color.g, color.b, alpha);
+            trans.position = Vector2.MoveTowards(trans.position, transform.position, counter);
+            yield return null;
+        }
+        Destroy(trans.gameObject);
     }
 
     //Orients player sprite in mouse's direction
