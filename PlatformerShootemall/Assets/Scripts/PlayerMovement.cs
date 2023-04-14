@@ -1,9 +1,5 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -13,18 +9,23 @@ public class PlayerMovement : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private float dirX;
     private MovementState currentMovementState;
+
     [SerializeField] private float jumpForce = 15f;
+    private bool doubleJumpAvailable;
+
     [SerializeField] private float moveSpeed = 10f;
+
     [SerializeField] private float dashSpeed = 5f;
-    [SerializeField] private float dashLength = 4f;
     [SerializeField] private float dashTimer = 0f;
     [SerializeField] private float dashTimerLength = 0.5f;
+    [SerializeField] private Transform dashEffect;
     private bool dashAvailable = false;
+
     [SerializeField] private LayerMask ground;
     [SerializeField] private AudioSource jumpSFX;
     [SerializeField] private AudioSource dashSFX;
-    private bool doubleJumpAvailable;
-    [SerializeField] private Transform dashEffect;
+    
+   
 
     //enum for storing different movement states
     private enum MovementState
@@ -60,19 +61,19 @@ public class PlayerMovement : MonoBehaviour
         HandleDash();
         //update animation
         UpdateAnimationState();
-        
+
     }
     //check for horizontal movement
     private void HandleMovement()
     {
         dirX = Input.GetAxisRaw("Horizontal");
         body.velocity = new Vector2(dirX * moveSpeed, body.velocity.y);
-/*
-        if (dirX != 0)
-        {
-            currentMovementState = MovementState.running;
-        }
-*/
+        /*
+                if (dirX != 0)
+                {
+                    currentMovementState = MovementState.running;
+                }
+        */
     }
 
     //checks what time of jump to perform
@@ -98,9 +99,9 @@ public class PlayerMovement : MonoBehaviour
 
     }
     //handle dashing countdown
-    private void HandleDash ()
+    private void HandleDash()
     {
-       if (dashAvailable)
+        if (dashAvailable)
         {
             if (Input.GetButton("Fire1")/* && CanDash()*/)
             {
@@ -111,9 +112,9 @@ public class PlayerMovement : MonoBehaviour
                 Dash();
             }
         }
-       else
+        else
         {
-            if (dashTimer >=0)
+            if (dashTimer >= 0)
             {
                 dashTimer -= Time.deltaTime;
             }
@@ -124,9 +125,10 @@ public class PlayerMovement : MonoBehaviour
                 animator.ResetTrigger("dash");
             }
         }
-        
-    }
 
+    }
+    /*
+    //Check if obstacle in way before dashing
     private bool CanDash()
     {
         Vector2 facingDirection;
@@ -150,35 +152,27 @@ public class PlayerMovement : MonoBehaviour
         }
         return canDash;
     }
-
+    */
     //dash in direction player is facing
-    private void Dash ()
+    private void Dash()
     {
-        float directedDashLength;
-        bool spriteFlipped = spriteRenderer.flipX;
-        if (!spriteFlipped) //if facing right
-        {
-            directedDashLength = dashLength;
-        }
-        else // facing left
-        {
-            directedDashLength = -dashLength;
-        }
+        //dash towards mouse
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
         Vector2 initialPosition = transform.position;
-        Vector2 finalPosition = new Vector2(transform.position.x + directedDashLength, transform.position.y);
-        transform.position = Vector2.MoveTowards(transform.position, finalPosition, dashSpeed);
+        transform.position = Vector2.MoveTowards(transform.position, mousePosition, dashSpeed);
 
         Transform dashEffectTransform = Instantiate(dashEffect, initialPosition, Quaternion.identity);
-        
+
         StartCoroutine(FadeOut(dashEffectTransform, 1f));
     }
     IEnumerator FadeOut(Transform trans, float duration)
     {
         float counter = 0;
-        while(counter < duration)
+        while (counter < duration)
         {
             counter += Time.deltaTime;
-            float alpha = Mathf.Lerp(1f, 0f, counter/duration);
+            float alpha = Mathf.Lerp(1f, 0f, counter / duration);
             Color color = transform.GetComponent<Renderer>().material.color;
             trans.GetComponent<Renderer>().material.color = new Color(color.r, color.g, color.b, alpha);
             trans.position = Vector2.MoveTowards(trans.position, transform.position, counter);
@@ -203,18 +197,18 @@ public class PlayerMovement : MonoBehaviour
             spriteRenderer.flipX = true;
         }
     }
- 
+
     //Updates the sprite's animation based on movement
     private void UpdateAnimationState()
     {
 
-        if(dirX > 0f) //if moving to right
+        if (dirX > 0f) //if moving to right
         {
             //spriteRenderer.flipX = false;
             currentMovementState = MovementState.running;
 
         }
-        else if(dirX < 0f) //if moving to left
+        else if (dirX < 0f) //if moving to left
         {
             //spriteRenderer.flipX = true;
             currentMovementState = MovementState.running;
@@ -223,8 +217,8 @@ public class PlayerMovement : MonoBehaviour
         {
             currentMovementState = MovementState.idling;
         }
-        
-        if(body.velocity.y > 0.1f) //if jumping
+
+        if (body.velocity.y > 0.1f) //if jumping
         {
             currentMovementState = MovementState.jumping;
         }
@@ -235,14 +229,14 @@ public class PlayerMovement : MonoBehaviour
 
         //set animation based on moveState
         animator.SetInteger("currentMovementState", (int)currentMovementState);
-       
+
     }
     //Creates a boxcollider slightly lower than the player sprite's
     //returns true if it is touching the ground
     private bool IsOnGround()
     {
         bool onGround = false;
-        if(Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, ground))
+        if (Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, ground))
         {
             onGround = true;
         }
