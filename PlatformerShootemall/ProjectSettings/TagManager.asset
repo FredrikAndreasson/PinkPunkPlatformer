@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Orange
+  - Damage Trap
+  - Death Trap
   layers:
   - Default
   - TransparentFX
@@ -38,6 +41,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 1808417685
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Collectables
+    uniqueID: 551003217
+    locked: 0
+  - name: Terrain
+    uniqueID: 4175717829
     locked: 0
