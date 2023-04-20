@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 639124261}
   m_Layer: 3
   m_Name: Ground
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1017,7 +1017,7 @@ GameObject:
   - component: {fileID: 1369405835}
   - component: {fileID: 1369405836}
   - component: {fileID: 1369405837}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1266,8 +1266,16 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7596331839595987545, guid: 8bb8e3e014fb1c84dbacc717226dd6b7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7596331839595987545, guid: 8bb8e3e014fb1c84dbacc717226dd6b7, type: 3}
       propertyPath: m_TagString
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7596331839595987550, guid: 8bb8e3e014fb1c84dbacc717226dd6b7, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7596331839595987551, guid: 8bb8e3e014fb1c84dbacc717226dd6b7, type: 3}
       propertyPath: dashSpeed

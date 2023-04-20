@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -15,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private float moveSpeed = 10f;
 
-    [SerializeField] private float dashSpeed = 5f;
+    [SerializeField] private float dashSpeed = 1f;
     [SerializeField] private float dashTimer = 0f;
     [SerializeField] private float dashTimerLength = 0.5f;
     [SerializeField] private Transform dashEffect;
@@ -103,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (dashAvailable)
         {
-            if (Input.GetButton("Fire1")/* && CanDash()*/)
+            if (Input.GetButton("Fire1") && CanDash())
             {
                 dashTimer = dashTimerLength;
                 dashAvailable = false;
@@ -127,32 +128,38 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
-    /*
+    
     //Check if obstacle in way before dashing
     private bool CanDash()
     {
-        Vector2 facingDirection;
-        bool canDash;
-        if (!spriteRenderer.flipX) //if facing right
+        Debug.Log("TestCanDash");
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 facingDirection = mousePosition- transform.position;
+        facingDirection.Normalize();
+        bool canDash = true;
+        
+        int playerLayerMask = 1 << LayerMask.NameToLayer("Player");
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, facingDirection, 5f, ~playerLayerMask);
+        if (hit.collider != null)
         {
-            facingDirection = Vector2.right;
-        }
-        else // facing left
-        {
-            facingDirection = Vector2.left;
-        }
-        canDash = Physics2D.Raycast(transform.position, facingDirection, 1f).collider == null;
-        if (canDash)
-        {
-            Debug.Log("Can dash!");
-        }
-        else
-        {
-            Debug.Log("No Dash :(");
+            Debug.Log("collides with" + hit.collider.gameObject.tag);
+             if (hit.collider.CompareTag("Ground"))
+            {
+                Debug.Log("collides with ground");
+                canDash = false;
+            }
         }
         return canDash;
     }
-    */
+
+    private void OnDrawGizmos()
+    {
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 facingDirection = mousePosition- transform.position;
+        facingDirection.Normalize();
+        Gizmos.DrawLine(transform.position, transform.position +(facingDirection*5));
+    }
+
     //dash in direction player is facing
     private void Dash()
     {
