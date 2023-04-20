@@ -1,9 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class SlimeMovement : MonoBehaviour
 {
@@ -23,12 +18,12 @@ public class SlimeMovement : MonoBehaviour
             if (hit.collider.CompareTag("Wall"))
             {
                 speed = -speed;
-            }  
+            }
         }
 
         //change direction of sprite based on movement
-        if (speed.x > 0 && transform.localScale.x > 0){transform.localScale = new Vector2(transform.localScale.x * -1, transform.localScale.y);}
-        else if (speed.x < 0 && transform.localScale.x < 0){transform.localScale = new Vector2(transform.localScale.x * -1, transform.localScale.y);}
+        if (speed.x > 0 && transform.localScale.x > 0) { transform.localScale = new Vector2(transform.localScale.x * -1, transform.localScale.y); }
+        else if (speed.x < 0 && transform.localScale.x < 0) { transform.localScale = new Vector2(transform.localScale.x * -1, transform.localScale.y); }
 
         //move
         transform.position += Vector3.right * speed.x * Time.deltaTime;

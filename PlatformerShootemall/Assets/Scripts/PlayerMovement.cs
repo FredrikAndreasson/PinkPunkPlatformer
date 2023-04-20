@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Security.Cryptography;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -15,9 +14,11 @@ public class PlayerMovement : MonoBehaviour
     private bool doubleJumpAvailable;
 
     [SerializeField] private float moveSpeed = 10f;
+    private Vector2 facingDirection;
 
-    [SerializeField] private float dashSpeed = 1f;
-    [SerializeField] private float dashTimer = 0f;
+    [SerializeField] private float dashLength = 1f;
+    private float adjustedDashLength;
+    private float dashTimer = 0f;
     [SerializeField] private float dashTimerLength = 0.5f;
     [SerializeField] private Transform dashEffect;
     private bool dashAvailable = false;
@@ -25,8 +26,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask ground;
     [SerializeField] private AudioSource jumpSFX;
     [SerializeField] private AudioSource dashSFX;
-    
-   
+
+
 
     //enum for storing different movement states
     private enum MovementState
@@ -69,12 +70,6 @@ public class PlayerMovement : MonoBehaviour
     {
         dirX = Input.GetAxisRaw("Horizontal");
         body.velocity = new Vector2(dirX * moveSpeed, body.velocity.y);
-        /*
-                if (dirX != 0)
-                {
-                    currentMovementState = MovementState.running;
-                }
-        */
     }
 
     //checks what time of jump to perform
@@ -110,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
                 dashAvailable = false;
                 animator.SetTrigger("dash");
                 animator.ResetTrigger("dashRecharged");
-                Dash();
+                Dash(facingDirection);
             }
         }
         else
@@ -128,51 +123,47 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
-    
+
     //Check if obstacle in way before dashing
     private bool CanDash()
     {
-        Debug.Log("TestCanDash");
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 facingDirection = mousePosition- transform.position;
-        facingDirection.Normalize();
         bool canDash = true;
-        
+        Debug.Log("TestCanDash");
+
         int playerLayerMask = 1 << LayerMask.NameToLayer("Player");
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, facingDirection, 5f, ~playerLayerMask);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, facingDirection, dashLength, ~playerLayerMask);
+        adjustedDashLength = dashLength;
         if (hit.collider != null)
         {
-            Debug.Log("collides with" + hit.collider.gameObject.tag);
-             if (hit.collider.CompareTag("Ground"))
+            adjustedDashLength = Mathf.Abs(hit.distance);
+            Debug.DrawRay(transform.position, facingDirection * adjustedDashLength, Color.red, 1f);
+            if (adjustedDashLength < 1f)
             {
-                Debug.Log("collides with ground");
                 canDash = false;
             }
         }
+        Debug.DrawRay(transform.position, facingDirection * adjustedDashLength, Color.green);
+        Debug.Log("dashlength: " + adjustedDashLength);
         return canDash;
     }
 
     private void OnDrawGizmos()
     {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 facingDirection = mousePosition- transform.position;
-        facingDirection.Normalize();
-        Gizmos.DrawLine(transform.position, transform.position +(facingDirection*5));
+
+        Debug.DrawRay(transform.position, facingDirection * dashLength, Color.green);
     }
 
     //dash in direction player is facing
-    private void Dash()
+    private void Dash(Vector2 direction)
     {
-        //dash towards mouse
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
         Vector2 initialPosition = transform.position;
-        transform.position = Vector2.MoveTowards(transform.position, mousePosition, dashSpeed);
-
+        //dash in facing direction
+        transform.position = Vector2.MoveTowards(transform.position, direction * adjustedDashLength, adjustedDashLength);
+        //create dash sprite
         Transform dashEffectTransform = Instantiate(dashEffect, initialPosition, Quaternion.identity);
-
         StartCoroutine(FadeOut(dashEffectTransform, 1f));
     }
+    //fadeout prefab while moving towards object
     IEnumerator FadeOut(Transform trans, float duration)
     {
         float counter = 0;
@@ -192,9 +183,8 @@ public class PlayerMovement : MonoBehaviour
     private void LookInMouseDirection()
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        Vector2 direction = mousePosition - transform.position;
-        float angle = Vector2.SignedAngle(Vector2.up, direction);
+        facingDirection = mousePosition - transform.position;
+        float angle = Vector2.SignedAngle(Vector2.up, facingDirection);
         if (angle < 0.1f)
         {
             spriteRenderer.flipX = false;
@@ -211,13 +201,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (dirX > 0f) //if moving to right
         {
-            //spriteRenderer.flipX = false;
             currentMovementState = MovementState.running;
 
         }
         else if (dirX < 0f) //if moving to left
         {
-            //spriteRenderer.flipX = true;
             currentMovementState = MovementState.running;
         }
         else if (body.velocity.x == 0 && body.velocity.y == 0)//if still
