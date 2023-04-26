@@ -25,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private LayerMask ground;
     [SerializeField] private AudioSource jumpSFX;
+    [SerializeField] private AudioSource doubleJumpSFX;
     [SerializeField] private AudioSource dashSFX;
 
 
@@ -79,17 +80,18 @@ public class PlayerMovement : MonoBehaviour
         {
             if (IsOnGround())
             {
-                //jumpSFX.Play();
+                
                 body.velocity = new Vector2(body.velocity.x, jumpForce);
                 doubleJumpAvailable = true;
+                jumpSFX.Play();
             }
             else if (doubleJumpAvailable)
             {
-                //jumpSFX.Play();
                 body.velocity = new Vector2(body.velocity.x, jumpForce);
                 doubleJumpAvailable = false;
                 //animation only triggers if double jumping
                 animator.SetTrigger("doubleJump");
+                doubleJumpSFX.Play();
             }
         }
 
@@ -128,22 +130,19 @@ public class PlayerMovement : MonoBehaviour
     private bool CanDash()
     {
         bool canDash = true;
-        Debug.Log("TestCanDash");
-
         int playerLayerMask = 1 << LayerMask.NameToLayer("Player");
         RaycastHit2D hit = Physics2D.Raycast(transform.position, facingDirection, dashLength, ~playerLayerMask);
         adjustedDashLength = dashLength;
         if (hit.collider != null)
         {
+            //shorten dash length if obstacle in way
             adjustedDashLength = Mathf.Abs(hit.distance);
-            Debug.DrawRay(transform.position, facingDirection * adjustedDashLength, Color.red, 1f);
             if (adjustedDashLength < 1f)
             {
                 canDash = false;
+                Debug.Log("Cannot dash");
             }
         }
-        Debug.DrawRay(transform.position, facingDirection * adjustedDashLength, Color.green);
-        Debug.Log("dashlength: " + adjustedDashLength);
         return canDash;
     }
 
@@ -156,27 +155,9 @@ public class PlayerMovement : MonoBehaviour
     //dash in direction player is facing
     private void Dash(Vector2 direction)
     {
-        Vector2 initialPosition = transform.position;
         //dash in facing direction
         transform.position = Vector2.MoveTowards(transform.position, direction * adjustedDashLength, adjustedDashLength);
-        //create dash sprite
-        Transform dashEffectTransform = Instantiate(dashEffect, initialPosition, Quaternion.identity);
-        StartCoroutine(FadeOut(dashEffectTransform, 1f));
-    }
-    //fadeout prefab while moving towards object
-    IEnumerator FadeOut(Transform trans, float duration)
-    {
-        float counter = 0;
-        while (counter < duration)
-        {
-            counter += Time.deltaTime;
-            float alpha = Mathf.Lerp(1f, 0f, counter / duration);
-            Color color = transform.GetComponent<Renderer>().material.color;
-            trans.GetComponent<Renderer>().material.color = new Color(color.r, color.g, color.b, alpha);
-            trans.position = Vector2.MoveTowards(trans.position, transform.position, counter);
-            yield return null;
-        }
-        Destroy(trans.gameObject);
+        dashSFX.Play();
     }
 
     //Orients player sprite in mouse's direction
