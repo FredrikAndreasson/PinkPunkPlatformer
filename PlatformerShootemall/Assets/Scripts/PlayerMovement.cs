@@ -7,28 +7,26 @@ public class PlayerMovement : MonoBehaviour
     private BoxCollider2D boxCollider;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+
     private float dirX;
+    private Vector2 facingDirection;
     private MovementState currentMovementState;
 
     [SerializeField] private float jumpForce = 15f;
     private bool doubleJumpAvailable;
 
     [SerializeField] private float moveSpeed = 10f;
-    private Vector2 facingDirection;
+    [SerializeField] private float dashDistance = 5f;
+    [SerializeField] private float dashCooldownLength = 0.5f;
+    private float adjustedDashDistance;
+    public float dashCooldown = 0f;
 
-    [SerializeField] private float dashLength = 1f;
-    private float adjustedDashLength;
-    private float dashTimer = 0f;
-    [SerializeField] private float dashTimerLength = 0.5f;
-    [SerializeField] private Transform dashEffect;
     private bool dashAvailable = false;
 
     [SerializeField] private LayerMask ground;
     [SerializeField] private AudioSource jumpSFX;
     [SerializeField] private AudioSource doubleJumpSFX;
     [SerializeField] private AudioSource dashSFX;
-
-
 
     //enum for storing different movement states
     private enum MovementState
@@ -94,7 +92,32 @@ public class PlayerMovement : MonoBehaviour
                 doubleJumpSFX.Play();
             }
         }
-
+    }
+    //Creates a boxcollider slightly lower than the player sprite's
+    //returns true if it is touching the ground
+    private bool IsOnGround()
+    {
+        bool onGround = false;
+        if (Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, ground))
+        {
+            onGround = true;
+        }
+        return onGround;
+    }
+    //Orients player sprite in mouse's direction
+    private void LookInMouseDirection()
+    {
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        facingDirection = mousePosition - transform.position;
+        float angle = Vector2.SignedAngle(Vector2.up, facingDirection);
+        if (angle < 0.1f)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else
+        {
+            spriteRenderer.flipX = true;
+        }
     }
     //handle dashing countdown
     private void HandleDash()
@@ -103,18 +126,19 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Input.GetButton("Fire1") && CanDash())
             {
-                dashTimer = dashTimerLength;
+                dashCooldown = dashCooldownLength;
                 dashAvailable = false;
                 animator.SetTrigger("dash");
                 animator.ResetTrigger("dashRecharged");
+
                 Dash(facingDirection);
             }
         }
         else
         {
-            if (dashTimer >= 0)
+            if (dashCooldown >= 0)
             {
-                dashTimer -= Time.deltaTime;
+                dashCooldown -= Time.deltaTime;
             }
             else
             {
@@ -131,13 +155,13 @@ public class PlayerMovement : MonoBehaviour
     {
         bool canDash = true;
         int playerLayerMask = 1 << LayerMask.NameToLayer("Player");
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, facingDirection, dashLength, ~playerLayerMask);
-        adjustedDashLength = dashLength;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, facingDirection, dashDistance, ~playerLayerMask);
+        adjustedDashDistance = dashDistance;
         if (hit.collider != null)
         {
             //shorten dash length if obstacle in way
-            adjustedDashLength = Mathf.Abs(hit.distance);
-            if (adjustedDashLength < 1f)
+            adjustedDashDistance = Mathf.Abs(hit.distance);
+            if (adjustedDashDistance < 1f)
             {
                 canDash = false;
                 Debug.Log("Cannot dash");
@@ -149,31 +173,15 @@ public class PlayerMovement : MonoBehaviour
     private void OnDrawGizmos()
     {
 
-        Debug.DrawRay(transform.position, facingDirection * dashLength, Color.green);
+        Debug.DrawRay(transform.position, facingDirection * dashDistance, Color.green);
     }
 
     //dash in direction player is facing
     private void Dash(Vector2 direction)
     {
         //dash in facing direction
-        transform.position = Vector2.MoveTowards(transform.position, direction * adjustedDashLength, adjustedDashLength);
+        transform.position = Vector2.MoveTowards(transform.position, direction * adjustedDashDistance, adjustedDashDistance);
         dashSFX.Play();
-    }
-
-    //Orients player sprite in mouse's direction
-    private void LookInMouseDirection()
-    {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        facingDirection = mousePosition - transform.position;
-        float angle = Vector2.SignedAngle(Vector2.up, facingDirection);
-        if (angle < 0.1f)
-        {
-            spriteRenderer.flipX = false;
-        }
-        else
-        {
-            spriteRenderer.flipX = true;
-        }
     }
 
     //Updates the sprite's animation based on movement
@@ -207,15 +215,5 @@ public class PlayerMovement : MonoBehaviour
         animator.SetInteger("currentMovementState", (int)currentMovementState);
 
     }
-    //Creates a boxcollider slightly lower than the player sprite's
-    //returns true if it is touching the ground
-    private bool IsOnGround()
-    {
-        bool onGround = false;
-        if (Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, ground))
-        {
-            onGround = true;
-        }
-        return onGround;
-    }
+
 }

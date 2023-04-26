@@ -6,7 +6,9 @@ public class PlayerLife : MonoBehaviour
     private Animator animator;
     private Rigidbody2D body;
 
-    [SerializeField] private LifeController lifeController;
+    public int life = 5;
+
+    [SerializeField] private StatsController lifeController;
     [SerializeField] private AudioSource deathSFX;
     [SerializeField] private AudioSource getHitSFX;
     [SerializeField] private Transform shield;
@@ -40,11 +42,18 @@ public class PlayerLife : MonoBehaviour
     }
     private void DealDamage(GameObject gameObject)
     {
-        
         //update hitpoints
-        //todo: update with relative hitpoints from gameobject (remove hardcoding)
-        lifeController.DealDamageFrom(gameObject, 1);
-
+        //todo: update with relative damage from gameobject (remove hardcoding)
+        Debug.Log("Hit by " + gameObject.name);
+        life -= 1;
+        if (life <= 0)
+        {
+            Die();
+        }
+        else
+        {
+            GetHit(gameObject);
+        }
     }
 
     public void GetHit(GameObject gameObject)
