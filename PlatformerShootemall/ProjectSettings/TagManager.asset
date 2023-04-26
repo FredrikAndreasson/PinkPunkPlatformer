@@ -9,6 +9,7 @@ TagManager:
   - Death Trap
   - Wall
   - Enemy
+  - Shield
   layers:
   - Default
   - TransparentFX

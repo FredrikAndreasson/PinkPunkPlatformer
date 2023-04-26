@@ -6,8 +6,10 @@ public class PlayerLife : MonoBehaviour
     private Rigidbody2D body;
     [SerializeField] private int playerMaxHealth = 5;
     private int currentHealth;
-    [SerializeField] private AudioSource deathSFX;
 
+    [SerializeField] private LifeController lifeController;
+    [SerializeField] private AudioSource deathSFX;
+    [SerializeField] private AudioSource getHitSFX;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,8 +41,15 @@ public class PlayerLife : MonoBehaviour
     }
     private void GetHitBy(GameObject gameObject)
     {
+        //trigger animation
         animator.SetTrigger("hit");
-        transform.position = transform.position + (transform.position - gameObject.transform.position);
+        //getHitSFX.Play();
+        //get knocked back away from enemy
+        
+        transform.position = transform.position + 2*(transform.position - gameObject.transform.position);
+        //update hitpoints todo-update with hitpoints from gameobject (remove hardcoding)
+        lifeController.GetHit(1);
+
     }
 
     private void Die()
