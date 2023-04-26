@@ -189,7 +189,7 @@ public class PlayerMovement : MonoBehaviour
         {
             currentMovementState = MovementState.running;
         }
-        else if (body.velocity.x == 0 && body.velocity.y == 0)//if still
+        else //if still
         {
             currentMovementState = MovementState.idling;
         }

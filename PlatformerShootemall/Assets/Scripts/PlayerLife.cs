@@ -1,28 +1,27 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerLife : MonoBehaviour
 {
     private Animator animator;
     private Rigidbody2D body;
-    [SerializeField] private int playerMaxHealth = 5;
-    private int currentHealth;
 
     [SerializeField] private LifeController lifeController;
     [SerializeField] private AudioSource deathSFX;
     [SerializeField] private AudioSource getHitSFX;
+    [SerializeField] private Transform shield;
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
-        currentHealth = playerMaxHealth;
     }
-
     // Update is called once per frame
     void Update()
     {
 
     }
+
     //If hitting a trap
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -30,7 +29,7 @@ public class PlayerLife : MonoBehaviour
         switch (collision.gameObject.tag)
         {
             case "Enemy":
-                GetHitBy(collision.gameObject);
+                DealDamage(collision.gameObject);
                 break;
             case "Death Trap":
                 Die();
@@ -39,30 +38,38 @@ public class PlayerLife : MonoBehaviour
                 break;
         }
     }
-    private void GetHitBy(GameObject gameObject)
+    private void DealDamage(GameObject gameObject)
+    {
+        
+        //update hitpoints
+        //todo: update with relative hitpoints from gameobject (remove hardcoding)
+        lifeController.DealDamageFrom(gameObject, 1);
+
+    }
+
+    public void GetHit(GameObject gameObject)
     {
         //trigger animation
         animator.SetTrigger("hit");
-        //getHitSFX.Play();
-        //get knocked back away from enemy
-        
-        transform.position = transform.position + 2*(transform.position - gameObject.transform.position);
-        //update hitpoints todo-update with hitpoints from gameobject (remove hardcoding)
-        lifeController.GetHit(1);
+        //get knocked back
+        transform.position = transform.position + (transform.position - gameObject.transform.position);
+        getHitSFX.Play();
 
     }
 
-    private void Die()
+
+    public void Die()
     {
         //trigger death animation
         animator.SetTrigger("death");
-        //deathSFX.Play();
+        deathSFX.Play();
+        Destroy(shield.gameObject);
         //disable movement
-        //body.bodyType = RigidbodyType2D.Static;
+        body.bodyType = RigidbodyType2D.Static;
     }
     //restart level
-    /* private void Restart()
+     private void Restart()
      {
          SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-     }*/
+     }
 }

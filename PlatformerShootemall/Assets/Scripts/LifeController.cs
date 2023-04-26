@@ -5,32 +5,38 @@ using UnityEngine;
 
 public class LifeController : MonoBehaviour
 {
-    [SerializeField] int life = 5;
     [SerializeField] Transform player;
     [SerializeField] Canvas UI;
-
-    [SerializeField] AudioSource getHitSFX;
-    //update life when hit
-    internal void GetHit(int damage)
-    {
-        life -= damage;
-        getHitSFX.Play();
-    }
-
+    public int life = 5;
+    private PlayerLife playerLifeScript;
+   
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerLifeScript = player.GetComponent<PlayerLife>();
     }
 
     // Update is called once per frame
     void Update()
     {
         //updateUI
-        //checkif dead
+    }
+
+    //update life when hit
+    internal void DealDamageFrom(GameObject gameObject, int damage)
+    {
+        //get damage from gameobject
+        life -= damage;
+
         if (life <= 0)
         {
-           
+            playerLifeScript.Die();
         }
+        else
+        {
+
+            playerLifeScript.GetHit(gameObject);
+        }
+
     }
 }
