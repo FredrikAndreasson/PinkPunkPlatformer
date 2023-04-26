@@ -8,9 +8,9 @@ public class WaypointTraverser : MonoBehaviour
     private int currentTarget = 0;
 
     public bool reverse; //if true, it reverse the platform backwards. Otherwise it loops from the start
-    public int direction = 1;
+    int direction = 1;
 
-    public float speed = 2f;
+    public float speed = 4f;
 
     private void Update()
     {
