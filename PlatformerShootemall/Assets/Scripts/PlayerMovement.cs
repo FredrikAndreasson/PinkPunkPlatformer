@@ -110,11 +110,11 @@ public class PlayerMovement : MonoBehaviour
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         facingDirection = mousePosition - transform.position;
         float angle = Vector2.SignedAngle(Vector2.up, facingDirection);
-        if (angle < 0.1f)
+        if (angle < 0.1f) //facing right
         {
             spriteRenderer.flipX = false;
         }
-        else
+        else //facing left
         {
             spriteRenderer.flipX = true;
         }
