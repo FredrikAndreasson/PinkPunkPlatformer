@@ -10,10 +10,15 @@ public class WaypointTraverser : MonoBehaviour
     public bool reverse; //if true, it reverse the platform backwards. Otherwise it loops from the start
     int direction = 1;
 
+    public bool traverse = true; 
+
     public float speed = 4f;
 
     private void Update()
     {
+        if (traverse == false)
+            return;
+
         if (Vector2.Distance(waypoints[currentTarget].transform.position, transform.position) < 0.1f)
         {
             if (!reverse)

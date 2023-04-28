@@ -143302,8 +143302,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -437.03265, y: 244.5}
-  m_SizeDelta: {x: 228.9347, y: 30}
+  m_AnchoredPosition: {x: -479.5199, y: 235.67004}
+  m_SizeDelta: {x: 143.9601, y: 47.6599}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &888735589
 MonoBehaviour:
@@ -143338,7 +143338,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Total Power: 0'
+  m_Text: 'Score: 0'
 --- !u!222 &888735590
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -143725,6 +143725,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7596331839595987551, guid: 8bb8e3e014fb1c84dbacc717226dd6b7, type: 3}
+      propertyPath: dashSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7596331839595987551, guid: 8bb8e3e014fb1c84dbacc717226dd6b7, type: 3}
       propertyPath: jumpForce
       value: 10
       objectReference: {fileID: 0}
@@ -143959,7 +143963,7 @@ RectTransform:
   m_GameObject: {fileID: 1794970638}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1978211466}
@@ -143967,8 +143971,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 524.48, y: 232.48}
-  m_SizeDelta: {x: 54.0435, y: 54.0435}
+  m_AnchoredPosition: {x: 540, y: 221}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1794970640
 MonoBehaviour:
@@ -144305,7 +144309,7 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
