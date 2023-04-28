@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - Damage Trap
+  - Death Trap
+  - Wall
+  - Enemy
+  - Shield
   layers:
   - Default
   - TransparentFX
