@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WaypointTraverser : MonoBehaviour
@@ -6,14 +8,17 @@ public class WaypointTraverser : MonoBehaviour
     private int currentTarget = 0;
 
     public bool reverse; //if true, it reverse the platform backwards. Otherwise it loops from the start
-    public int direction = 1;
+    int direction = 1;
 
-    public float speed = 2f;
+    public bool traverse = true; 
+
+    public float speed = 4f;
 
     private void Update()
     {
-        Debug.Log(currentTarget);
-        Debug.Log(Vector2.Distance(waypoints[currentTarget].transform.position, transform.position));
+        if (traverse == false)
+            return;
+
         if (Vector2.Distance(waypoints[currentTarget].transform.position, transform.position) < 0.1f)
         {
             if (!reverse)
