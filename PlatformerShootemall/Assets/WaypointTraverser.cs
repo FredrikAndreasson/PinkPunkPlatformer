@@ -14,6 +14,8 @@ public class WaypointTraverser : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(currentTarget);
+        Debug.Log(Vector2.Distance(waypoints[currentTarget].transform.position, transform.position));
         if (Vector2.Distance(waypoints[currentTarget].transform.position, transform.position) < 0.1f)
         {
             if (!reverse)
