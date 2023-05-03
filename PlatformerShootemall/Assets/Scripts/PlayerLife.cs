@@ -67,7 +67,7 @@ public class PlayerLife : MonoBehaviour
         //trigger animation
         animator.SetTrigger("hit");
         //get knocked back
-        transform.position = transform.position + (transform.position - gameObject.transform.position);
+        transform.position = transform.position + (transform.position - gameObject.transform.position)/2;
         audioSource.PlayOneShot(getHitSFX);
 
     }

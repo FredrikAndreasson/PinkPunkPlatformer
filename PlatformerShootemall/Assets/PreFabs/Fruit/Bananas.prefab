@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2977950628927839831}
   - component: {fileID: 2977950628927839830}
   - component: {fileID: 2977950628927839833}
+  - component: {fileID: 865148508875574851}
   m_Layer: 0
   m_Name: Bananas
   m_TagString: Fruit
@@ -230,3 +231,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &865148508875574851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2977950628927839832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86df3c8723f32264faa907843bc1cb39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 1

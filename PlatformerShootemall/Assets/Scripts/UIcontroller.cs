@@ -1,14 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 public class UIcontroller : Singleton<UIcontroller>
 {
     [SerializeField] private Text scoreText;
-    [SerializeField] private GameObject UIDashCooldown;
-    [SerializeField] private GameObject Player;
+    [SerializeField] private GameObject uiDashCooldown;
+    [SerializeField] private GameObject player;
     public Image[] hearts;
+    public Sprite dashCharging;
+    public Sprite dashReady;
     public Sprite fullHeart;
     public Sprite halfHeart;
     public Sprite emptyHeart;
@@ -25,22 +29,29 @@ public class UIcontroller : Singleton<UIcontroller>
 
     private void UpdateDash()
     {
-        float dashCooldown = Player.GetComponent<PlayerMovement>().dashCooldown;
-        UIDashCooldown.GetComponent<CanvasGroup>().alpha = 1f - dashCooldown;
-        
-          
+        float dashCooldown = player.GetComponent<PlayerMovement>().dashCooldown;
+        uiDashCooldown.GetComponent<CanvasGroup>().alpha = 1f - dashCooldown;
+        if (dashCooldown < 0.1f)
+        {
+            uiDashCooldown.GetComponent<Image>().overrideSprite = dashReady;
+        }
+        else
+        {
+            uiDashCooldown.GetComponent<Image>().overrideSprite = dashCharging;
+        }
+
     }
 
     private void UpdateScore()
     {
-        int score = Player.GetComponent<ItemCollector>().collectedFruit;
-        scoreText.text = "Fruit: " + score;
+        int score = player.GetComponent<ItemCollector>().collectedFruit;
+        scoreText.text = "Speed: " + score;
     }
 
     private void UpdateHealth()
     {
-        int health = Player.GetComponent<PlayerLife>().health;
-        int maxHealth = Player.GetComponent<PlayerLife>().maxHealth;
+        int health = player.GetComponent<PlayerLife>().health;
+        int maxHealth = player.GetComponent<PlayerLife>().maxHealth;
         if (health > maxHealth)
         {
             health = maxHealth;

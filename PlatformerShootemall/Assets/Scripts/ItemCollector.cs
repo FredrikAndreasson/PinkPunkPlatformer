@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class ItemCollector : MonoBehaviour
 {
     public int collectedFruit = 0;
-    [SerializeField] AudioClip collectSFX;
+    [SerializeField] private AudioClip collectSFX;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,13 +21,17 @@ public class ItemCollector : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.CompareTag("Fruit")) 
-        {                  
-            collision.gameObject.GetComponent<Animator>().SetTrigger("collected");
-            collision.gameObject.GetComponent<BoxCollider2D>().enabled = false;
-            collision.gameObject.GetComponent<AudioSource>().PlayOneShot(collectSFX);
-            Destroy(collision.gameObject, 0.3f);
-            collectedFruit++;
-            Debug.Log("Fruits collected: " + collectedFruit);
+        {
+            if (collision.gameObject.GetComponent<BoxCollider2D>().enabled)
+            {
+                collision.gameObject.GetComponent<Animator>().SetTrigger("collected");
+                collision.gameObject.GetComponent<BoxCollider2D>().enabled = false;
+                collision.gameObject.GetComponent<AudioSource>().PlayOneShot(collectSFX);
+                Destroy(collision.gameObject, 0.3f);
+                collectedFruit += collision.gameObject.GetComponent<FruitValue>().value;
+                Debug.Log("Fruits collected: " + collectedFruit);
+            }
+            
             
         }
     }
