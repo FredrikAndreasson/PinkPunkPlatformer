@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float dashDistance = 5f;
-    [SerializeField] private float dashCooldownLength = 0.5f;
+    [SerializeField] private float dashCooldownLength = 1f;
     private float adjustedDashDistance;
     public float dashCooldown = 0f;
 
