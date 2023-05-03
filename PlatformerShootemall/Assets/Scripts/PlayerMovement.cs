@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     private BoxCollider2D boxCollider;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+    private AudioSource audioSource;
 
     private float dirX;
     private Vector2 facingDirection;
@@ -24,9 +25,9 @@ public class PlayerMovement : MonoBehaviour
     private bool dashAvailable = false;
 
     [SerializeField] private LayerMask ground;
-    [SerializeField] private AudioSource jumpSFX;
-    [SerializeField] private AudioSource doubleJumpSFX;
-    [SerializeField] private AudioSource dashSFX;
+    [SerializeField] private AudioClip jumpSFX;
+    [SerializeField] private AudioClip doubleJumpSFX;
+    [SerializeField] private AudioClip dashSFX;
 
     //enum for storing different movement states
     private enum MovementState
@@ -47,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         currentMovementState = MovementState.idling;
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -81,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
                 
                 body.velocity = new Vector2(body.velocity.x, jumpForce);
                 doubleJumpAvailable = true;
-                jumpSFX.Play();
+                audioSource.PlayOneShot(jumpSFX);
             }
             else if (doubleJumpAvailable)
             {
@@ -89,7 +91,7 @@ public class PlayerMovement : MonoBehaviour
                 doubleJumpAvailable = false;
                 //animation only triggers if double jumping
                 animator.SetTrigger("doubleJump");
-                doubleJumpSFX.Play();
+                audioSource.PlayOneShot(doubleJumpSFX);
             }
         }
     }
@@ -100,6 +102,7 @@ public class PlayerMovement : MonoBehaviour
         bool onGround = false;
         if (Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, ground))
         {
+            Debug.Log("ON GRUOND");
             onGround = true;
         }
         return onGround;
@@ -181,7 +184,7 @@ public class PlayerMovement : MonoBehaviour
     {
         //dash in facing direction
         transform.position = Vector2.MoveTowards(transform.position, direction * adjustedDashDistance, adjustedDashDistance);
-        dashSFX.Play();
+        audioSource.PlayOneShot(dashSFX);
     }
 
     //Updates the sprite's animation based on movement

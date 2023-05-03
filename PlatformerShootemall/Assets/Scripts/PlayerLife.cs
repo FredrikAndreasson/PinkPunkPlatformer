@@ -10,14 +10,16 @@ public class PlayerLife : MonoBehaviour
     public int maxHealth = 5;
 
     [SerializeField] private StatsController lifeController;
-    [SerializeField] private AudioSource deathSFX;
-    [SerializeField] private AudioSource getHitSFX;
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip deathSFX;
+    [SerializeField] private AudioClip getHitSFX;
     [SerializeField] private Transform shield;
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
     }
     // Update is called once per frame
     void Update()
@@ -66,7 +68,7 @@ public class PlayerLife : MonoBehaviour
         animator.SetTrigger("hit");
         //get knocked back
         transform.position = transform.position + (transform.position - gameObject.transform.position);
-        getHitSFX.Play();
+        audioSource.PlayOneShot(getHitSFX);
 
     }
 
@@ -75,7 +77,7 @@ public class PlayerLife : MonoBehaviour
     {
         //trigger death animation
         animator.SetTrigger("death");
-        deathSFX.Play();
+        audioSource.PlayOneShot(deathSFX);
         Destroy(shield.gameObject);
         //disable movement
         body.bodyType = RigidbodyType2D.Static;
