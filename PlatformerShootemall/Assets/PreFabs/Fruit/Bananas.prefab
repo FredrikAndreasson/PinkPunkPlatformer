@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8393251008897505408
+--- !u!1 &2977950628927839832
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,11 +8,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8393251008897505411}
-  - component: {fileID: 8393251008897505413}
-  - component: {fileID: 8393251008897505410}
-  - component: {fileID: 8393251008897505412}
-  - component: {fileID: 1538069728666770270}
+  - component: {fileID: 2977950628927839829}
+  - component: {fileID: 2977950628927839828}
+  - component: {fileID: 2977950628927839831}
+  - component: {fileID: 2977950628927839830}
+  - component: {fileID: 2977950628927839833}
   m_Layer: 0
   m_Name: Bananas
   m_TagString: Fruit
@@ -20,13 +20,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8393251008897505411
+--- !u!4 &2977950628927839829
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8393251008897505408}
+  m_GameObject: {fileID: 2977950628927839832}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.79, y: 0.53, z: -0.014242117}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -35,14 +35,14 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &8393251008897505413
+--- !u!95 &2977950628927839828
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8393251008897505408}
+  m_GameObject: {fileID: 2977950628927839832}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 9eb46113ef19ab3469bbc39deef06823, type: 2}
@@ -56,13 +56,13 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!212 &8393251008897505410
+--- !u!212 &2977950628927839831
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8393251008897505408}
+  m_GameObject: {fileID: 2977950628927839832}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -108,13 +108,13 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &8393251008897505412
+--- !u!61 &2977950628927839830
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8393251008897505408}
+  m_GameObject: {fileID: 2977950628927839832}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -134,13 +134,13 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.8885977, y: 0.88859797}
   m_EdgeRadius: 0
---- !u!82 &1538069728666770270
+--- !u!82 &2977950628927839833
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8393251008897505408}
+  m_GameObject: {fileID: 2977950628927839832}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
