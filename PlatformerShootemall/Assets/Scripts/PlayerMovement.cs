@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -8,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     private BoxCollider2D boxCollider;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+    private AudioSource audioSource;
 
     private float dirX;
     private Vector2 facingDirection;
@@ -18,16 +18,16 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float dashDistance = 5f;
-    [SerializeField] private float dashCooldownLength = 0.5f;
+    [SerializeField] private float dashCooldownLength = 1f;
     private float adjustedDashDistance;
     public float dashCooldown = 0f;
 
     private bool dashAvailable = false;
 
     [SerializeField] private LayerMask ground;
-    [SerializeField] private AudioSource jumpSFX;
-    [SerializeField] private AudioSource doubleJumpSFX;
-    [SerializeField] private AudioSource dashSFX;
+    [SerializeField] private AudioClip jumpSFX;
+    [SerializeField] private AudioClip doubleJumpSFX;
+    [SerializeField] private AudioClip dashSFX;
 
     //enum for storing different movement states
     private enum MovementState
@@ -48,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         currentMovementState = MovementState.idling;
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -68,8 +69,11 @@ public class PlayerMovement : MonoBehaviour
     //check for horizontal movement
     private void HandleMovement()
     {
+        //more fruit = more speed
+        int collectedFruit = GetComponent<ItemCollector>().collectedFruit;
+        float updatedMoveSpeed = moveSpeed + collectedFruit;
         dirX = Input.GetAxisRaw("Horizontal");
-        body.velocity = new Vector2(dirX * moveSpeed, body.velocity.y);
+        body.velocity = new Vector2(dirX * updatedMoveSpeed, body.velocity.y);
     }
 
     //checks what time of jump to perform
@@ -79,10 +83,10 @@ public class PlayerMovement : MonoBehaviour
         {
             if (IsOnGround())
             {
-                
+
                 body.velocity = new Vector2(body.velocity.x, jumpForce);
                 doubleJumpAvailable = true;
-                jumpSFX.Play();
+                audioSource.PlayOneShot(jumpSFX);
             }
             else if (doubleJumpAvailable)
             {
@@ -90,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
                 doubleJumpAvailable = false;
                 //animation only triggers if double jumping
                 animator.SetTrigger("doubleJump");
-                doubleJumpSFX.Play();
+                audioSource.PlayOneShot(doubleJumpSFX);
             }
         }
     }
@@ -101,6 +105,7 @@ public class PlayerMovement : MonoBehaviour
         bool onGround = false;
         if (Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, ground))
         {
+            Debug.Log("ON GRUOND");
             onGround = true;
         }
         return onGround;
@@ -110,10 +115,6 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         facingDirection = mousePosition - transform.position;
-        //maybe
-        facingDirection.Normalize();
-        //Debug.Log(facingDirection.x + " " + facingDirection.y);
-        //
         float angle = Vector2.SignedAngle(Vector2.up, facingDirection);
         if (angle < 0.1f) //facing right
         {
@@ -144,7 +145,6 @@ public class PlayerMovement : MonoBehaviour
             if (dashCooldown >= 0)
             {
                 dashCooldown -= Time.deltaTime;
-                //Dash(facingDirection);
             }
             else
             {
@@ -162,7 +162,6 @@ public class PlayerMovement : MonoBehaviour
         bool canDash = true;
         int playerLayerMask = 1 << LayerMask.NameToLayer("Player");
         RaycastHit2D hit = Physics2D.Raycast(transform.position, facingDirection, dashDistance, ~playerLayerMask);
-        
         adjustedDashDistance = dashDistance;
         if (hit.collider != null)
         {
@@ -187,11 +186,9 @@ public class PlayerMovement : MonoBehaviour
     private void Dash(Vector2 direction)
     {
         //dash in facing direction
-        Debug.Log("Player Position: " + (int) transform.position.x + " " + (int)transform.position.y);
-        Debug.Log("Target Position: " + (direction * adjustedDashDistance));
-        //transform.position = Vector2.MoveTowards(transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition), Time.deltaTime * 50);
-        transform.position = Vector2.MoveTowards(transform.position, direction * adjustedDashDistance, adjustedDashDistance);
-        dashSFX.Play();
+        Vector2 target = new Vector2(transform.position.x + (direction.x * adjustedDashDistance), transform.position.y + (direction.y * adjustedDashDistance));
+        transform.position = Vector2.MoveTowards(transform.position, target, adjustedDashDistance);
+        audioSource.PlayOneShot(dashSFX);
     }
 
     //Updates the sprite's animation based on movement
