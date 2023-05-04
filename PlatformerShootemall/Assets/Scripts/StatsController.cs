@@ -8,6 +8,7 @@ public class StatsController : MonoBehaviour
     [SerializeField] Transform player;
     [SerializeField] Canvas UI;
     private int life;
+    private int score;
     private float dashCooldown;
     private PlayerLife playerLife;
     private PlayerMovement playerMovement;
@@ -24,7 +25,7 @@ public class StatsController : MonoBehaviour
     {
         //updateUI
         dashCooldown = playerMovement.dashCooldown;
-        life = playerLife.life;
+        life = playerLife.health;
         
     }
 }

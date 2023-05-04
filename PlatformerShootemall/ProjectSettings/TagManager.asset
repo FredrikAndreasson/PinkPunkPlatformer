@@ -10,6 +10,9 @@ TagManager:
   - Wall
   - Enemy
   - Shield
+  - Trap
+  - Fruit
+  - Level edge
   layers:
   - Default
   - TransparentFX
