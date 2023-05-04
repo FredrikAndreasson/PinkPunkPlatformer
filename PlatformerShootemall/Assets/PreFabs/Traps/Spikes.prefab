@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8498040840975272631}
   - component: {fileID: 8498040840975272624}
   - component: {fileID: 8498040840975272625}
-  - component: {fileID: -6135171472074608096}
   m_Layer: 0
   m_Name: Spikes
   m_TagString: Damage Trap
@@ -112,15 +111,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.86690545, y: 0.33368695}
   m_EdgeRadius: 0
---- !u!114 &-6135171472074608096
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8498040840975272630}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6fb532e3de97704fb426e6e90507f36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

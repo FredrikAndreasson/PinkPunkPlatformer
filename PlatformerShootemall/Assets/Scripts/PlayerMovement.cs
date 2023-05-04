@@ -83,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (IsOnGround())
             {
-
+                
                 body.velocity = new Vector2(body.velocity.x, jumpForce);
                 doubleJumpAvailable = true;
                 audioSource.PlayOneShot(jumpSFX);
