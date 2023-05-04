@@ -6,17 +6,20 @@ public class PlayerLife : MonoBehaviour
     private Animator animator;
     private Rigidbody2D body;
 
-    public int life = 5;
+    public int health = 5;
+    public int maxHealth = 5;
 
     [SerializeField] private StatsController lifeController;
-    [SerializeField] private AudioSource deathSFX;
-    [SerializeField] private AudioSource getHitSFX;
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip deathSFX;
+    [SerializeField] private AudioClip getHitSFX;
     [SerializeField] private Transform shield;
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
     }
     // Update is called once per frame
     void Update()
@@ -33,7 +36,10 @@ public class PlayerLife : MonoBehaviour
             case "Enemy":
                 DealDamage(collision.gameObject);
                 break;
-            case "Death Trap":
+            case "Trap":
+                DealDamage(collision.gameObject);
+                break;
+            case "Level edge":
                 Die();
                 break;
             default:
@@ -45,8 +51,8 @@ public class PlayerLife : MonoBehaviour
         //update hitpoints
         //todo: update with relative damage from gameobject (remove hardcoding)
         Debug.Log("Hit by " + gameObject.name);
-        life -= 1;
-        if (life <= 0)
+        health -= 1;
+        if (health <= 0)
         {
             Die();
         }
@@ -61,8 +67,8 @@ public class PlayerLife : MonoBehaviour
         //trigger animation
         animator.SetTrigger("hit");
         //get knocked back
-        transform.position = transform.position + (transform.position - gameObject.transform.position);
-        getHitSFX.Play();
+        transform.position = transform.position + (transform.position - gameObject.transform.position)/2;
+        audioSource.PlayOneShot(getHitSFX);
 
     }
 
@@ -71,7 +77,7 @@ public class PlayerLife : MonoBehaviour
     {
         //trigger death animation
         animator.SetTrigger("death");
-        deathSFX.Play();
+        audioSource.PlayOneShot(deathSFX);
         Destroy(shield.gameObject);
         //disable movement
         body.bodyType = RigidbodyType2D.Static;
