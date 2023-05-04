@@ -105,7 +105,6 @@ public class PlayerMovement : MonoBehaviour
         bool onGround = false;
         if (Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, ground))
         {
-            Debug.Log("ON GRUOND");
             onGround = true;
         }
         return onGround;
