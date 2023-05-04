@@ -5,13 +5,12 @@ using UnityEngine.UI;
 using System;
 public class GameManager : Singleton<GameManager>
 {
-
     public event Action<int> ScoreUpdated;
     public event Action HealthUpdated;
 
     private int score = 0;
 
-    private int health = 3; 
+    public int health = 3; 
 
     public void AddScore(int _score)
     {

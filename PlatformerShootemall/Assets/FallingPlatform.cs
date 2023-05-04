@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class FallingPlatform : MonoBehaviour
 {
-    public float timeBeforeDrop = 0.5f;
+    public float droptimer = 0.5f; 
+    private float timeBeforeDrop = 0.5f;
     public int dropSpeed = 5;
     public float resetTimer = 3;
     private bool currentlyColliding;
@@ -63,7 +64,7 @@ public class FallingPlatform : MonoBehaviour
             }
             if(transform.position.y >= startPos.y)
             {
-                timeBeforeDrop = 0.5f;
+                timeBeforeDrop = droptimer;
             }
         }
     }

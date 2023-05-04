@@ -14,6 +14,10 @@ public class HealthUI : MonoBehaviour
     private void HealthChange()
     {
         //probably not the best way 
-        gameObject.GetComponent<Text>().text = "Health: " + 2;
+        gameObject.GetComponent<Text>().text = GameManager.instance.health.ToString();
     }
+
+
+
+
 }
