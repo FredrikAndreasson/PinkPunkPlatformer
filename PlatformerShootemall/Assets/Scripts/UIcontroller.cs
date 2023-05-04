@@ -24,7 +24,6 @@ public class UIcontroller : Singleton<UIcontroller>
         UpdateHealth();
         UpdateScore();
         UpdateDash();
-        
     }
 
     private void UpdateDash()
