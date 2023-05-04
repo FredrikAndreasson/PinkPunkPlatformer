@@ -23,7 +23,7 @@ public class RinoMovement : MonoBehaviour
         {
             case State.Idle:
                 animator.SetBool("IsRunning", false);
-                hit = Physics2D.Raycast(transform.position, Vector2.right * transform.localScale.x, detectionDistance, playerLayerMask);
+                hit = Physics2D.Raycast(transform.position, Vector2.right * (-transform.localScale.x), detectionDistance, playerLayerMask);
                 // maybe change the logic to if the player is close in any kind of way?
 
                 if (hit.collider != null)
@@ -38,7 +38,7 @@ public class RinoMovement : MonoBehaviour
             case State.RunState:
                 animator.SetBool("IsRunning", true);
 
-                hit = Physics2D.Raycast(transform.position, Vector2.right * transform.localScale.x, 0.5f, wallLayerMask);
+                hit = Physics2D.Raycast(transform.position, Vector2.right * (-transform.localScale.x), transform.localScale.x + 0.5f, wallLayerMask);
 
                 if (hit.collider != null)
                 {
@@ -49,19 +49,19 @@ public class RinoMovement : MonoBehaviour
                 }
                 else
                 {
-                    transform.position += Vector3.right * speed.x * Time.deltaTime * transform.localScale.x;
+                    transform.position += Vector3.right * speed.x * Time.deltaTime * (-transform.localScale.x);
                 }
                 break;
 
             case State.WallHit:
-                animator.SetBool("WallHit", true);
+                animator.SetTrigger("WallHit");
                 speed = -speed;
                 ChangeDirection();
                 currentState = State.Idle;
                 break;
 
             case State.HitPlayer:
-                animator.SetBool("hitPlayer", true);
+                animator.SetTrigger("Hit");
                 currentState = State.Idle;
                 break;
         }

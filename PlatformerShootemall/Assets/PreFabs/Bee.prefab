@@ -57,7 +57,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &8900576981767584847
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   attackRange: 5
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 7862392789443650110, guid: 2004629d2ec43574c841bbbec1f89072, type: 3}
 --- !u!114 &8900576981767585201
 MonoBehaviour:
   m_ObjectHideFlags: 0
