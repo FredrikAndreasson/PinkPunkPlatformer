@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -109,6 +110,10 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         facingDirection = mousePosition - transform.position;
+        //maybe
+        facingDirection.Normalize();
+        //Debug.Log(facingDirection.x + " " + facingDirection.y);
+        //
         float angle = Vector2.SignedAngle(Vector2.up, facingDirection);
         if (angle < 0.1f) //facing right
         {
@@ -139,6 +144,7 @@ public class PlayerMovement : MonoBehaviour
             if (dashCooldown >= 0)
             {
                 dashCooldown -= Time.deltaTime;
+                //Dash(facingDirection);
             }
             else
             {
@@ -156,6 +162,7 @@ public class PlayerMovement : MonoBehaviour
         bool canDash = true;
         int playerLayerMask = 1 << LayerMask.NameToLayer("Player");
         RaycastHit2D hit = Physics2D.Raycast(transform.position, facingDirection, dashDistance, ~playerLayerMask);
+        
         adjustedDashDistance = dashDistance;
         if (hit.collider != null)
         {
@@ -180,6 +187,9 @@ public class PlayerMovement : MonoBehaviour
     private void Dash(Vector2 direction)
     {
         //dash in facing direction
+        Debug.Log("Player Position: " + (int) transform.position.x + " " + (int)transform.position.y);
+        Debug.Log("Target Position: " + (direction * adjustedDashDistance));
+        //transform.position = Vector2.MoveTowards(transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition), Time.deltaTime * 50);
         transform.position = Vector2.MoveTowards(transform.position, direction * adjustedDashDistance, adjustedDashDistance);
         dashSFX.Play();
     }
