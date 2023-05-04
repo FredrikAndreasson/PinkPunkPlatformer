@@ -186,7 +186,8 @@ public class PlayerMovement : MonoBehaviour
     private void Dash(Vector2 direction)
     {
         //dash in facing direction
-        transform.position = Vector2.MoveTowards(transform.position, direction * adjustedDashDistance, adjustedDashDistance);
+        Vector2 target = new Vector2(transform.position.x + (direction.x * adjustedDashDistance), transform.position.y + (direction.y * adjustedDashDistance));
+        transform.position = Vector2.MoveTowards(transform.position, target, adjustedDashDistance);
         audioSource.PlayOneShot(dashSFX);
     }
 
