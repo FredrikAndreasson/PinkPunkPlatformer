@@ -442,7 +442,7 @@ MonoBehaviour:
   dashCooldown: 0
   ground:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   jumpSFX: {fileID: 8300000, guid: e1f715e4266506345b6c204e0cbf6c58, type: 3}
   doubleJumpSFX: {fileID: 8300000, guid: ca1b50025fa60e94c97efe00046687be, type: 3}
   dashSFX: {fileID: 8300000, guid: aa30575738567fb4cb0320cb89076f97, type: 3}
