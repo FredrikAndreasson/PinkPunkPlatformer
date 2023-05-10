@@ -28,7 +28,7 @@ public class PlayerLife : MonoBehaviour
     }
 
     //If hitting a trap
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collision2D collision)
     {
 
         switch (collision.gameObject.tag)

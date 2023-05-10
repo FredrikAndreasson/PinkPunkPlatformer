@@ -7,8 +7,8 @@ public class RisingPlatform : MonoBehaviour
     public float riseTimer = 0.5f;
     private float timeBeforeRise = 0.5f;
     public int riseSpeed = 5;
-    public float resetTimer = 3;
-    private bool currentlyColliding;
+    public float resetTimer = 2;
+    private bool currentlyColliding = false;
     private Vector2 startPos;
 
 
@@ -19,7 +19,7 @@ public class RisingPlatform : MonoBehaviour
         {
             collision.gameObject.transform.SetParent(transform);
             currentlyColliding = true;
-            resetTimer = 3;
+            resetTimer = 2;
         }
 
     }
@@ -58,11 +58,11 @@ public class RisingPlatform : MonoBehaviour
         else
         {
             resetTimer -= Time.deltaTime;
-            if (resetTimer < 0 && transform.position.y <= startPos.y)
+            if (resetTimer < 0 && transform.position.y >= startPos.y)
             {
                 transform.position += Vector3.down * Time.deltaTime * riseSpeed / 2;
             }
-            if (transform.position.y >= startPos.y)
+            if (transform.position.y <= startPos.y)
             {
                 timeBeforeRise = riseTimer;
             }

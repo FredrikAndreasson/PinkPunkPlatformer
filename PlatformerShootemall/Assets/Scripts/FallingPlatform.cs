@@ -8,7 +8,7 @@ public class FallingPlatform : MonoBehaviour
     private float timeBeforeDrop = 0.5f;
     public int dropSpeed = 5;
     public float resetTimer = 2;
-    private bool currentlyColliding;
+    private bool currentlyColliding = false;
     private Vector2 startPos;
 
 
