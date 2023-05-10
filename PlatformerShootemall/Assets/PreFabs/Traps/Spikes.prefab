@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 8498040840975272631}
   - component: {fileID: 8498040840975272624}
   - component: {fileID: 8498040840975272625}
+  - component: {fileID: -6229920684902545156}
   m_Layer: 0
   m_Name: Spikes
-  m_TagString: Damage Trap
+  m_TagString: Trap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -111,3 +112,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.86690545, y: 0.33368695}
   m_EdgeRadius: 0
+--- !u!114 &-6229920684902545156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8498040840975272630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a379a32e39dffc746819ef84156cd5f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nbrOfSpikes: 0
+  sprite: {fileID: 21300000, guid: da2176ef0629bfd42958a94b2bf225a4, type: 3}
+  box: {fileID: 8498040840975272625}
