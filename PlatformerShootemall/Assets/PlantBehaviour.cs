@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class PlantBehaviour : MonoBehaviour
 {
-    public float attackDistance = 5.0f;
+    public float attackDistance = 10.0f;
     public float hitDistance = 1.0f;
-    public int health = 3;
-    public float attackInterval = 1.0f;
+    public float attackInterval = 30.0f;
     public GameObject projectilePrefab;
     public Transform projectileSpawnPoint;
 
@@ -23,7 +22,7 @@ public class PlantBehaviour : MonoBehaviour
         animator = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
         currentState = PlantState.Idle;
-        timeSinceLastAttack = attackInterval;
+        timeSinceLastAttack = 0;
     }
 
     void Update()
@@ -62,7 +61,14 @@ public class PlantBehaviour : MonoBehaviour
     public void ShootProjectile()
     {
         GameObject projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
+        projectile.GetComponent<Projectile>().SetDirection(new Vector3(-transform.localScale.x, 0).normalized);
+        ChangeState(PlantState.Idle);
         timeSinceLastAttack = 0;
+    }
+
+    public void DestroyObject()
+    {
+        Destroy(gameObject);
     }
 
 
@@ -75,12 +81,6 @@ public class PlantBehaviour : MonoBehaviour
             if (hitDirection.y > 0) // Player is jumping on the plant
             {
                 ChangeState(PlantState.Hit);
-                health--;
-
-                if (health <= 0)
-                {
-                    Destroy(gameObject);
-                }
             }
         }
     }
