@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FlyingEnemy : MonoBehaviour
+public class BeeBehaviour : MonoBehaviour
 {
     public float moveSpeed = 2f;
     public float attackRange = 5f;
