@@ -35,7 +35,6 @@ public class FallingPlatform : MonoBehaviour
     public void Start()
     {
         startPos = transform.position;
-
     }
 
     public void Update()

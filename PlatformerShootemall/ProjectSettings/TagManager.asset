@@ -13,6 +13,7 @@ TagManager:
   - Trap
   - Fruit
   - Level edge
+  - Fire
   layers:
   - Default
   - TransparentFX
