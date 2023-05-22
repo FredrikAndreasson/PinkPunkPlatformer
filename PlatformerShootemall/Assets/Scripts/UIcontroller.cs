@@ -44,7 +44,7 @@ public class UIcontroller : Singleton<UIcontroller>
     private void UpdateScore()
     {
         int score = player.GetComponent<ItemCollector>().collectedFruit;
-        scoreText.text = "Speed: " + score;
+        scoreText.text = "Fruits: " + score;
     }
 
     private void UpdateHealth()

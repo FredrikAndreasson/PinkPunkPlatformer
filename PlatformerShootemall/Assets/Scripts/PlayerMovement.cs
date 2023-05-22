@@ -69,11 +69,8 @@ public class PlayerMovement : MonoBehaviour
     //check for horizontal movement
     private void HandleMovement()
     {
-        //more fruit = more speed
-        int collectedFruit = GetComponent<ItemCollector>().collectedFruit;
-        float updatedMoveSpeed = moveSpeed + collectedFruit;
         dirX = Input.GetAxisRaw("Horizontal");
-        body.velocity = new Vector2(dirX * updatedMoveSpeed, body.velocity.y);
+        body.velocity = new Vector2(dirX * moveSpeed, body.velocity.y);
     }
 
     //checks what time of jump to perform
