@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 2779251841154354057}
   - component: {fileID: 2779251841154354056}
   - component: {fileID: 2779251841154354071}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rino
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

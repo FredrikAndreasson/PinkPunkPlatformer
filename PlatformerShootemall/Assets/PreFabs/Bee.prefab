@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8900576981767585201}
   - component: {fileID: 8900576981767585202}
   - component: {fileID: 8900576981767585203}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BeeBody
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -232,7 +232,7 @@ GameObject:
   - component: {fileID: 8900576983012937821}
   m_Layer: 0
   m_Name: Bee
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

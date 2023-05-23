@@ -169,7 +169,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Speed: 0'
+  m_Text: 'Fruit: 0'
 --- !u!1 &4944042457342778583
 GameObject:
   m_ObjectHideFlags: 0

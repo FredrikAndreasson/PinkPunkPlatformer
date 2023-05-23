@@ -25,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
     private bool dashAvailable = false;
 
     [SerializeField] private LayerMask ground;
+    [SerializeField] private LayerMask enemy;
     [SerializeField] private AudioClip jumpSFX;
     [SerializeField] private AudioClip doubleJumpSFX;
     [SerializeField] private AudioClip dashSFX;
@@ -100,7 +101,8 @@ public class PlayerMovement : MonoBehaviour
     private bool IsOnGround()
     {
         bool onGround = false;
-        if (Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, ground))
+        if (Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, ground) ||
+            Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, enemy))
         {
             onGround = true;
         }
