@@ -281,10 +281,43 @@ MonoBehaviour:
     Assets
 
 
+    Pixel Frog
+
+    https://pixelfrog-assets.itch.io/
+
+
+    Arvid
+    Almquist
+
+    Fredrik Andreasson
+
+    Christopher O''Driscoll
+
 
     Sound FX
 
 
+    All
+    sound effects from freesound.org
+
+    https://freesound.org/
+
+
+    onehugeeye
+
+    newagesoup
+
+    mlestn1
+
+    deraj
+
+    deleted_user_6479820
+
+    nezuai
+
+    OwlStorm
+
+    DeltaCode
 
 
 
@@ -298,7 +331,9 @@ MonoBehaviour:
 
 
 
-    THANK YOU FOR PLAYING!'
+
+    THANK
+    YOU FOR PLAYING!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -361,7 +396,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -27.621765, y: 0, z: -267.5125, w: -925.3594}
+  m_margin: {x: -27.621765, y: 0, z: -267.5125, w: -1054.0703}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
