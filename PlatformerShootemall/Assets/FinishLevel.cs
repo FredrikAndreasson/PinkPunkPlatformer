@@ -21,7 +21,7 @@ public class FinishLevel : MonoBehaviour
             isFinished = true;
             flagAnimator.SetTrigger("PlayerHit");
             finishSFX.Play();
-            //Invoke("CompleteLevel", 3f);
+            Invoke("CompleteLevel", 1f);
         }
     }
 
