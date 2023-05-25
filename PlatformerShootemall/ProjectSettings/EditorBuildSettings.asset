@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Start_Screen.unity
     guid: 6787fa5eaa8070845a46131cf4679734
   - enabled: 1
+    path: Assets/Scenes/Level_A.unity
+    guid: f27bd03c854354744a16c9911ec5a3cb
+  - enabled: 1
     path: Assets/Scenes/levelChristopher.unity
     guid: 628474672bd86864e8ddeebb51fd4567
   - enabled: 1
