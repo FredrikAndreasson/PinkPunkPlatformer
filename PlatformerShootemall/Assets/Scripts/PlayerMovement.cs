@@ -25,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
     private bool dashAvailable = false;
 
     [SerializeField] private LayerMask ground;
+    [SerializeField] private LayerMask enemy;
     [SerializeField] private AudioClip jumpSFX;
     [SerializeField] private AudioClip doubleJumpSFX;
     [SerializeField] private AudioClip dashSFX;
@@ -69,11 +70,8 @@ public class PlayerMovement : MonoBehaviour
     //check for horizontal movement
     private void HandleMovement()
     {
-        //more fruit = more speed
-        int collectedFruit = GetComponent<ItemCollector>().collectedFruit;
-        float updatedMoveSpeed = moveSpeed + collectedFruit;
         dirX = Input.GetAxisRaw("Horizontal");
-        body.velocity = new Vector2(dirX * updatedMoveSpeed, body.velocity.y);
+        body.velocity = new Vector2(dirX * moveSpeed, body.velocity.y);
     }
 
     //checks what time of jump to perform
@@ -103,9 +101,9 @@ public class PlayerMovement : MonoBehaviour
     private bool IsOnGround()
     {
         bool onGround = false;
-        if (Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, ground))
+        if (Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, ground) ||
+            Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, 0.1f, enemy))
         {
-            Debug.Log("ON GRUOND");
             onGround = true;
         }
         return onGround;

@@ -34,8 +34,7 @@ public class PlayerLife : MonoBehaviour
         switch (collision.gameObject.tag)
         {
             case "Enemy":
-                DealDamage(collision.gameObject);
-                break;
+            case "Bullet":
             case "Trap":
                 DealDamage(collision.gameObject);
                 break;

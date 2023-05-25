@@ -7,8 +7,8 @@ public class FallingPlatform : MonoBehaviour
     public float droptimer = 0.5f; 
     private float timeBeforeDrop = 0.5f;
     public int dropSpeed = 5;
-    public float resetTimer = 3;
-    private bool currentlyColliding;
+    public float resetTimer = 2;
+    private bool currentlyColliding = false;
     private Vector2 startPos;
 
 
@@ -19,7 +19,7 @@ public class FallingPlatform : MonoBehaviour
         {
             collision.gameObject.transform.SetParent(transform);
             currentlyColliding = true;
-            resetTimer = 3;
+            resetTimer = 2;
         }
         
     }

@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class FlyingEnemy : MonoBehaviour
+public class BeeBehaviour : MonoBehaviour
 {
-    public float moveSpeed = 5f;
+    public float moveSpeed = 2f;
     public float attackRange = 5f;
     public GameObject projectilePrefab;
 
@@ -10,7 +10,13 @@ public class FlyingEnemy : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 movement;
     private Animator anim;
+    private WaypointTraverser traverser;
     private float timeSinceLastAttack = 0f;
+    private float dist;
+
+    const string BEE_IDLE = "BeeIdle";
+    const string BEE_ATTACK = "BeeAttack";
+    const string BEE_HIT = "BeeHit";
 
     // Finite State Machine States
     private enum State
@@ -27,10 +33,14 @@ public class FlyingEnemy : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        traverser = GetComponent<WaypointTraverser>();
+        traverser.speed = moveSpeed;
     }
 
     void Update()
     {
+        dist = Vector3.Distance(transform.position, player.position);
+        Debug.Log(dist);
         switch (currentState)
         {
             case State.PatrolState:
@@ -50,12 +60,12 @@ public class FlyingEnemy : MonoBehaviour
     void PatrolUpdate()
     {
         // Fly around randomly
-        movement.x = Random.Range(-1f, 1f);
-        movement.y = Random.Range(-1f, 1f);
+        traverser.traverse = true;
 
-        if (Vector3.Distance(transform.position, player.position) < 300)
+        if (dist < 11)
         {
             currentState = State.FollowState;
+            traverser.traverse = false;
         }
     }
 
@@ -64,14 +74,16 @@ public class FlyingEnemy : MonoBehaviour
         // Move towards the player
         movement = (player.position - transform.position).normalized;
 
-        if (Vector3.Distance(transform.position, player.position) > 300)
+        if (dist > 11)
         {
             currentState = State.PatrolState;
+            anim.Play(BEE_IDLE);
         }
 
-        if (Vector3.Distance(transform.position, player.position) < 100)
+        if (dist < 7)
         {
             currentState = State.AttackState;
+            anim.Play(BEE_ATTACK);
         }
     }
 
@@ -85,6 +97,12 @@ public class FlyingEnemy : MonoBehaviour
             Shoot();
             timeSinceLastAttack = 0f;
         }
+
+        if (dist > 7)
+        {
+            currentState = State.FollowState;
+            anim.Play(BEE_IDLE);
+        }
     }
 
     void FixedUpdate()
@@ -96,7 +114,7 @@ public class FlyingEnemy : MonoBehaviour
     void Shoot()
     {
         // Instantiate a projectile and shoot it at the player
-        //GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-        //projectile.GetComponent<Projectile>().SetDirection((player.position - transform.position).normalized);
+        GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        projectile.GetComponent<Projectile>().SetDirection((player.position - transform.position).normalized);
     }
 }

@@ -20,10 +20,8 @@ public class ShieldHit : MonoBehaviour
 
         switch (collision.gameObject.tag)
         {
-            case "Enemy":
-                collision.gameObject.transform.position = gameObject.transform.position + 2 * (gameObject.transform.position - transform.position);
-                break;
-            case "Wall":
+            case "Bullet":
+                Destroy(collision.gameObject);
                 break;
             default:
                 break;

@@ -249,7 +249,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -264,13 +264,14 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.81426924, y: 0.61451185}
-      - {x: 0.814269, y: -0.61835325}
-      - {x: 0.8701224, y: -0.62323093}
-      - {x: 0.8903659, y: -0.6040235}
-      - {x: 1.1347555, y: -0.37115854}
-      - {x: 1.1385968, y: 0.375}
-      - {x: 0.87499976, y: 0.61170626}
+    - - {x: 0.67790115, y: 0.5611502}
+      - {x: 0.7078971, y: -0.7931072}
+      - {x: 0.90811217, y: -0.7220049}
+      - {x: 1.0043358, y: -0.65720946}
+      - {x: 1.2651951, y: -0.3948749}
+      - {x: 1.2927526, y: 0.3987162}
+      - {x: 1.2393906, y: 0.55287194}
+      - {x: 0.6942864, y: 0.94015265}
 --- !u!114 &2218004030033492063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -443,6 +444,9 @@ MonoBehaviour:
   ground:
     serializedVersion: 2
     m_Bits: 8
+  enemy:
+    serializedVersion: 2
+    m_Bits: 64
   jumpSFX: {fileID: 8300000, guid: e1f715e4266506345b6c204e0cbf6c58, type: 3}
   doubleJumpSFX: {fileID: 8300000, guid: ca1b50025fa60e94c97efe00046687be, type: 3}
   dashSFX: {fileID: 8300000, guid: aa30575738567fb4cb0320cb89076f97, type: 3}
