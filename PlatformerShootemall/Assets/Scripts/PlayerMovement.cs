@@ -55,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(MainMenu.isPaused) return;
         //check if direction pressed
         HandleMovement();
         //check if jump pressed
