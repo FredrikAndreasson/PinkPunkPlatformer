@@ -12,6 +12,10 @@ public class PlayerMovement : MonoBehaviour
     private float dirX;
     private Vector2 facingDirection;
     private MovementState currentMovementState;
+    private Vector2 dashTarget;
+    private bool dashing = false;
+    [SerializeField] private float DashSpeed = 50f;
+
 
     [SerializeField] private float jumpForce = 15f;
     private bool doubleJumpAvailable;
@@ -135,17 +139,25 @@ public class PlayerMovement : MonoBehaviour
                 animator.SetTrigger("dash");
                 animator.ResetTrigger("dashRecharged");
 
-                Dash(facingDirection);
+                dashTarget = new Vector2(transform.position.x + (facingDirection.x * adjustedDashDistance), transform.position.y + (facingDirection.y * adjustedDashDistance));
+                Debug.Log(dashTarget);
+                audioSource.PlayOneShot(dashSFX);
+                this.gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
+                dashing = true;
+                //Dash(facingDirection);
             }
         }
         else
         {
-            if (dashCooldown >= 0)
+            if (dashCooldown >= -2)
             {
                 dashCooldown -= Time.deltaTime;
+                if(dashing == true)
+                    Dash(dashTarget);
             }
             else
             {
+                this.gameObject.GetComponent<Rigidbody2D>().gravityScale = 3;
                 dashAvailable = true;
                 animator.SetTrigger("dashRecharged");
                 animator.ResetTrigger("dash");
@@ -181,12 +193,17 @@ public class PlayerMovement : MonoBehaviour
     }
 
     //dash in direction player is facing
-    private void Dash(Vector2 direction)
+    private void Dash(Vector2 target)
     {
         //dash in facing direction
-        Vector2 target = new Vector2(transform.position.x + (direction.x * adjustedDashDistance), transform.position.y + (direction.y * adjustedDashDistance));
-        transform.position = Vector2.MoveTowards(transform.position, target, adjustedDashDistance);
-        audioSource.PlayOneShot(dashSFX);
+        //Vector2 target = new Vector2(transform.position.x + (direction.x * adjustedDashDistance), transform.position.y + (direction.y * adjustedDashDistance));
+        transform.position = Vector2.MoveTowards(transform.position, target, Time.deltaTime * DashSpeed);
+        if (Vector2.Distance(transform.position, target) < 0.2f)
+        {
+            dashing = false;
+            this.gameObject.GetComponent<Rigidbody2D>().gravityScale = 3;
+        }
+        //audioSource.PlayOneShot(dashSFX);
     }
 
     //Updates the sprite's animation based on movement
@@ -219,6 +236,19 @@ public class PlayerMovement : MonoBehaviour
         //set animation based on moveState
         animator.SetInteger("currentMovementState", (int)currentMovementState);
 
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Wall" || collision.gameObject.tag == "Ground")
+        {
+            if (dashing == true)
+            {
+                dashing = false;
+                this.gameObject.GetComponent<Rigidbody2D>().gravityScale = 3;
+                transform.position -= new Vector3(facingDirection.x * 0.1f, facingDirection.y * 0.1f, 0);
+            }
+        }
     }
 
 }
