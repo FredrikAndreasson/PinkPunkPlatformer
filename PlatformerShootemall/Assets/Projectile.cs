@@ -23,8 +23,12 @@ public class Projectile : MonoBehaviour
         vel = direction * speed;
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Shield")) Destroy(gameObject);
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Shield")) Destroy(gameObject);
+        if (collision.gameObject.CompareTag("Player")) Destroy(gameObject);
     }
 }

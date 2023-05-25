@@ -3,10 +3,6 @@ using UnityEngine;
 public class SlimeMovement : MonoBehaviour
 {
     public Vector2 speed = new Vector2(1.0f, 0.0f);
-    void Start()
-    {
-
-    }
 
     void Update()
     {
@@ -27,5 +23,13 @@ public class SlimeMovement : MonoBehaviour
 
         //move
         transform.position += Vector3.right * speed.x * Time.deltaTime;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+        }
     }
 }
