@@ -8,7 +8,7 @@ public class GameManager : Singleton<GameManager>
     public event Action<int> ScoreUpdated;
     public event Action HealthUpdated;
 
-    private int score = 0;
+    public int score = 0;
 
     public int health = 3; 
 

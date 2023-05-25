@@ -83,5 +83,12 @@ public class PlantBehaviour : MonoBehaviour
                 ChangeState(PlantState.Hit);
             }
         }
+
+
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            Physics2D.IgnoreCollision(other.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+        }
+        
     }
 }
