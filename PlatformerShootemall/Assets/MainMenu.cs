@@ -7,7 +7,8 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     public static bool isPaused = false;
-    public GameObject pauseUI;
+    public GameObject pauseMenu;
+    [SerializeField] public GameObject optionsMenu;
     [SerializeField] GameObject pauseBackground;
     public void PlayGame()
     {
@@ -24,7 +25,7 @@ public class MainMenu : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             if(isPaused)
-            {
+            {               
                 ResumeGame();
             } else
             {
@@ -35,7 +36,8 @@ public class MainMenu : MonoBehaviour
     }
     public void ResumeGame()
     {
-        pauseUI.SetActive(false);
+        optionsMenu.SetActive(false);
+        pauseMenu.SetActive(false);
         pauseBackground.SetActive(false);
         Time.timeScale = 1.0f;
         isPaused = false;
@@ -43,7 +45,7 @@ public class MainMenu : MonoBehaviour
     }
     private void PauseGame()
     {
-        pauseUI.SetActive(true);
+        pauseMenu.SetActive(true);
         pauseBackground.SetActive(true);
         Time.timeScale = 0;
         isPaused = true;

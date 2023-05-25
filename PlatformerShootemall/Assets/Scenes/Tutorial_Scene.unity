@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 132758425}
   - component: {fileID: 132758424}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: CollectInstructions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -209,7 +209,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -208.6, y: 156.8}
+  m_AnchoredPosition: {x: -177.1, y: 161.3}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &132758424
@@ -14382,7 +14382,7 @@ GameObject:
   - component: {fileID: 471558718}
   - component: {fileID: 471558717}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: JumpInstructions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14522,7 +14522,7 @@ GameObject:
   - component: {fileID: 673703414}
   - component: {fileID: 673703413}
   m_Layer: 5
-  m_Name: Text (TMP) (3)
+  m_Name: FlagInstructions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18172,7 +18172,7 @@ GameObject:
   - component: {fileID: 1340243967}
   - component: {fileID: 1340243966}
   m_Layer: 5
-  m_Name: Text (TMP) (2)
+  m_Name: EnemiesInstructions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18195,7 +18195,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -139.1, y: 194.8}
+  m_AnchoredPosition: {x: -131.5, y: 195.1}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1340243966
@@ -18364,7 +18364,7 @@ GameObject:
   - component: {fileID: 1349801414}
   - component: {fileID: 1349801413}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: MoveInstructions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18499,7 +18499,7 @@ GameObject:
   - component: {fileID: 1374655163}
   - component: {fileID: 1374655162}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: DashInstructions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18522,7 +18522,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -239.3, y: 116.8}
+  m_AnchoredPosition: {x: -230, y: 123.4}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1374655162
