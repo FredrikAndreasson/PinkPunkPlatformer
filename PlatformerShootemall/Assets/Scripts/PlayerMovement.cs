@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float dashDistance = 5f;
-    [SerializeField] private float dashCooldownLength = 1f;
+    [SerializeField] private float dashCooldownLength = 3f;
     private float adjustedDashDistance;
     public float dashCooldown = 0f;
 
@@ -150,7 +150,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            if (dashCooldown >= -2)
+            if (dashCooldown >= 0)
             {
                 dashCooldown -= Time.deltaTime;
                 if(dashing == true)
