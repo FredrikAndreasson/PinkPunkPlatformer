@@ -6,18 +6,8 @@ public class ItemCollector : MonoBehaviour
 {
     public int collectedFruit = 0;
     [SerializeField] private AudioClip collectSFX;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    //When boxCollider is triggered, do this
+    //if colliding with a fruit, trigger animation and sound, then destroy it and update score with fruit's value
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.CompareTag("Fruit")) 

@@ -14,17 +14,12 @@ public class PlayerLife : MonoBehaviour
     [SerializeField] private AudioClip deathSFX;
     [SerializeField] private AudioClip getHitSFX;
     [SerializeField] private Transform shield;
-    // Start is called before the first frame update
+  
     void Start()
     {
         animator = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
-    }
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     //If hitting a trap
@@ -45,6 +40,7 @@ public class PlayerLife : MonoBehaviour
                 break;
         }
     }
+    //deal damage or kill player if not enough health left
     private void DealDamage(GameObject gameObject)
     {
         //update hitpoints
@@ -60,6 +56,7 @@ public class PlayerLife : MonoBehaviour
             GetHit(gameObject);
         }
     }
+    //trigger animation, sound and knockback effect
 
     public void GetHit(GameObject gameObject)
     {
@@ -71,7 +68,7 @@ public class PlayerLife : MonoBehaviour
 
     }
 
-
+    //trigger death animation, sound and restart level
     public void Die()
     {
         //trigger death animation

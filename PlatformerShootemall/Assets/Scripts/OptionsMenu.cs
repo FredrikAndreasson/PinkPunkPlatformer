@@ -6,11 +6,12 @@ using UnityEngine.Audio;
 public class OptionsMenu : MonoBehaviour
 {
     public AudioMixer mixer;
-    // Start is called before the first frame update
+    //take value on slider and set volume
     public void SetVolume(float volume)
     {
         mixer.SetFloat("Volume", volume);
     }
+    //toggle fullscreen
     public void SetFullscreen(bool isFull)
     {
         Screen.fullScreen = isFull;

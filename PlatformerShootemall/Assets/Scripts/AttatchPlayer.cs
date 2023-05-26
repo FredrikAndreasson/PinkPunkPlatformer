@@ -5,7 +5,7 @@ using UnityEngine;
 public class AttatchPlayer : MonoBehaviour
 {
 
-    //handles collision with player
+    //atteches player to object
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.name == "Player")
@@ -13,7 +13,7 @@ public class AttatchPlayer : MonoBehaviour
             collision.gameObject.transform.SetParent(transform);
         }
     }
-
+    //decouples player from object
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.name == "Player")

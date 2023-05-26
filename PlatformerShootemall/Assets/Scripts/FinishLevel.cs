@@ -13,7 +13,7 @@ public class FinishLevel : MonoBehaviour
     {
         flagAnimator = GetComponent<Animator>();
     }
-
+    //trigger animation and finish level
     private void OnTriggerEnter2D(Collider2D collision)
     { 
         if (collision.gameObject.name == ("Player") && !isFinished)
@@ -24,7 +24,7 @@ public class FinishLevel : MonoBehaviour
             Invoke("CompleteLevel", 1f);
         }
     }
-
+    //move to next scene
     private void CompleteLevel()
     {
 

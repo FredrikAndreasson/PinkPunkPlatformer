@@ -5,6 +5,7 @@ using System.Net.NetworkInformation;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
+//observer that updates UI
 public class UIcontroller : Singleton<UIcontroller>
 {
     [SerializeField] private Text scoreText;
@@ -25,7 +26,7 @@ public class UIcontroller : Singleton<UIcontroller>
         UpdateScore();
         UpdateDash();
     }
-
+    //make sprite reflect cooldown status
     private void UpdateDash()
     {
         float dashCooldown = player.GetComponent<PlayerMovement>().dashCooldown;
@@ -40,13 +41,13 @@ public class UIcontroller : Singleton<UIcontroller>
         }
 
     }
-
+    //check score and update UI
     private void UpdateScore()
     {
         int score = player.GetComponent<ItemCollector>().collectedFruit;
         scoreText.text = "Fruit: " + score;
     }
-
+    //check health and update UI
     private void UpdateHealth()
     {
         int health = player.GetComponent<PlayerLife>().health;
@@ -57,6 +58,7 @@ public class UIcontroller : Singleton<UIcontroller>
         }
         for (int i = 0; i < hearts.Length; i++)
         {
+            //number of full hearts = current health
             if (i < health)
             {
                 hearts[i].sprite = fullHeart;
@@ -65,6 +67,7 @@ public class UIcontroller : Singleton<UIcontroller>
             {
                 hearts[i].sprite = emptyHeart;
             }
+            //only show as many hearts as max health allows
             if (i < maxHealth)
             {
                 hearts[i].enabled = true;
