@@ -9,7 +9,7 @@ public class LookAtMouse : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    // Update is called once per frame
+    // rotate sprite relative to mouse cursor
     void Update()
     {
         if (MainMenu.isPaused) return;

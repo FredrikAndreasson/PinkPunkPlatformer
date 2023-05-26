@@ -10,6 +10,7 @@ public class QuitGame : MonoBehaviour
     {
         StartCoroutine(QuitAfter(delay));
     }
+    //quits game when countdown reaches zero
     IEnumerator QuitAfter(float timeToDelay)
     {
         delayCountdown = timeToDelay;

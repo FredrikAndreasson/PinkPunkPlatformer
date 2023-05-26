@@ -117,7 +117,7 @@ public class BeeBehaviour : MonoBehaviour
         GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
         projectile.GetComponent<Projectile>().SetDirection((player.position - transform.position).normalized);
     }
-
+    //ignore collisions with other enemies
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
