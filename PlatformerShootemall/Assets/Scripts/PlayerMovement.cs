@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 facingDirection;
     private MovementState currentMovementState;
     private Vector2 dashTarget;
+    private Vector2 dashStart;
     private bool dashing = false;
     [SerializeField] private float DashSpeed = 50f;
 
@@ -141,6 +142,8 @@ public class PlayerMovement : MonoBehaviour
                 animator.ResetTrigger("dashRecharged");
 
                 dashTarget = new Vector2(transform.position.x + (facingDirection.x * adjustedDashDistance), transform.position.y + (facingDirection.y * adjustedDashDistance));
+                dashStart = transform.position;
+
                 Debug.Log(dashTarget);
                 audioSource.PlayOneShot(dashSFX);
                 this.gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
@@ -200,6 +203,11 @@ public class PlayerMovement : MonoBehaviour
         //Vector2 target = new Vector2(transform.position.x + (direction.x * adjustedDashDistance), transform.position.y + (direction.y * adjustedDashDistance));
         transform.position = Vector2.MoveTowards(transform.position, target, Time.deltaTime * DashSpeed);
         if (Vector2.Distance(transform.position, target) < 0.2f)
+        {
+            dashing = false;
+            this.gameObject.GetComponent<Rigidbody2D>().gravityScale = 3;
+        }
+        if(Vector2.Distance(transform.position, dashStart) > 6)
         {
             dashing = false;
             this.gameObject.GetComponent<Rigidbody2D>().gravityScale = 3;
