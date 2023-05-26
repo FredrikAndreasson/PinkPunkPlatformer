@@ -21,7 +21,7 @@ public class WinConditions : MonoBehaviour
     void Update()
     {
         //Authenticate
-        if (GameObject.FindGameObjectsWithTag("Fruit").Length < fruitLimit)
+        if (GameObject.FindGameObjectsWithTag("Fruit").Length <= fruitLimit)
         {
             return;
         }
