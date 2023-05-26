@@ -45,9 +45,11 @@ public class PlayerLife : MonoBehaviour
                 break;
             case "Bullet":
                 _DamageEvent.Invoke(1);
+                GetHit(collision.gameObject);
                 break;
             case "Trap":
                 _DamageEvent.Invoke(1);
+                GetHit(collision.gameObject);
                 break;
             case "Level edge":
                 Die();
