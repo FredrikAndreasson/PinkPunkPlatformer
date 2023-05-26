@@ -1,9 +1,15 @@
 using UnityEngine;
+using static GhostBehaviour;
 
 public class SlimeMovement : MonoBehaviour
 {
     public Vector2 speed = new Vector2(1.0f, 0.0f);
 
+    private Animator animator;
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
     void Update()
     {
         //look for wall collision
@@ -25,8 +31,23 @@ public class SlimeMovement : MonoBehaviour
         transform.position += Vector3.right * speed.x * Time.deltaTime;
     }
 
+    public void DestroyObject()
+    {
+        Destroy(gameObject);
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Vector2 hitDirection = (collision.transform.position - transform.position).normalized;
+
+            if (hitDirection.y > 0) // Player is jumping on the plant
+            {
+                speed = Vector2.zero;
+                animator.SetTrigger("Hit");
+            }
+        }
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());

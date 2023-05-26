@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class RinoMovement : MonoBehaviour
 {
@@ -62,19 +63,29 @@ public class RinoMovement : MonoBehaviour
                 break;
         }
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void DestroyObject()
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        Destroy(gameObject);
+    }
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Player"))
         {
-            Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+            Vector2 hitDirection = (other.transform.position - transform.position).normalized;
+
+            if (hitDirection.y > 0) // Player is jumping on the plant
+            {
+                currentState = State.HitPlayer;
+                animator.SetTrigger("Hit");
+            }
         }
 
-        if (collision.gameObject.CompareTag("Player"))
+
+        if (other.gameObject.CompareTag("Enemy"))
         {
-            animator.SetBool("IsRunning", false);
-            currentState = State.HitPlayer;
+            Physics2D.IgnoreCollision(other.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
         }
+
     }
 
     void OnWallHitAnimationEnd()
@@ -89,6 +100,8 @@ public class RinoMovement : MonoBehaviour
     {
         currentState = State.Idle;
         animator.ResetTrigger("Hit");
+
+        DestroyObject();
     }
     private void ChangeDirection()
     {

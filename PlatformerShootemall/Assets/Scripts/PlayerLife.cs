@@ -1,10 +1,13 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static GhostBehaviour;
 
 public class PlayerLife : MonoBehaviour
 {
     private Animator animator;
     private Rigidbody2D body;
+    private bool dead = false;
 
     public int health = 5;
     public int maxHealth = 5;
@@ -14,24 +17,37 @@ public class PlayerLife : MonoBehaviour
     [SerializeField] private AudioClip deathSFX;
     [SerializeField] private AudioClip getHitSFX;
     [SerializeField] private Transform shield;
+    [SerializeField] private IntEventSO _HealthUpdatedEvent;
+    [SerializeField] private IntEventSO _DamageEvent;
   
     void Start()
     {
         animator = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
+
+        _HealthUpdatedEvent.Event += UpdateHealth;
     }
 
-    //If hitting a trap
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
         switch (collision.gameObject.tag)
         {
             case "Enemy":
+                Vector2 hitDirection = (collision.transform.position - transform.position).normalized;
+
+                if (hitDirection.y > 0)
+                {
+                    _DamageEvent.Invoke(1);
+                    GetHit(collision.gameObject);
+                }
+                break;
             case "Bullet":
+                _DamageEvent.Invoke(1);
+                break;
             case "Trap":
-                DealDamage(collision.gameObject);
+                _DamageEvent.Invoke(1);
                 break;
             case "Level edge":
                 Die();
@@ -41,22 +57,18 @@ public class PlayerLife : MonoBehaviour
         }
     }
     //deal damage or kill player if not enough health left
-    private void DealDamage(GameObject gameObject)
+    public void UpdateHealth(int health)
     {
-        //update hitpoints
-        //todo: update with relative damage from gameobject (remove hardcoding)
-        Debug.Log("Hit by " + gameObject.name);
-        health -= 1;
-        if (health <= 0)
+        this.health = health;
+    }
+    private void Update()
+    {
+        if (health <= 0 && !dead)
         {
+            dead = true;
             Die();
         }
-        else
-        {
-            GetHit(gameObject);
-        }
     }
-    //trigger animation, sound and knockback effect
 
     public void GetHit(GameObject gameObject)
     {

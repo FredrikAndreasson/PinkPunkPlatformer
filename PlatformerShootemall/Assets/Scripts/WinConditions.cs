@@ -20,14 +20,15 @@ public class WinConditions : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("fruit limit:" + fruitLimit + " current fruit:" + GameObject.FindGameObjectsWithTag("Fruit").Length + " total fruit:" + totalFruit);
         //Authenticate
-        if (GameObject.FindGameObjectsWithTag("Fruit").Length <= fruitLimit)
+        if (GameObject.FindGameObjectsWithTag("Fruit").Length > fruitLimit)
         {
             return;
         }
 
         //Log
-        Log(totalFruit, GameManager.instance.score);
+        Log(totalFruit, 1);
 
         //Authorize
         Authorize();

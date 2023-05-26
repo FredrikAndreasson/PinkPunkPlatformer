@@ -1,4 +1,5 @@
 using UnityEngine;
+using static GhostBehaviour;
 
 public class BeeBehaviour : MonoBehaviour
 {
@@ -23,7 +24,8 @@ public class BeeBehaviour : MonoBehaviour
     {
         PatrolState,
         FollowState,
-        AttackState
+        AttackState,
+        HitState
     }
 
     private State currentState = State.PatrolState;
@@ -51,6 +53,8 @@ public class BeeBehaviour : MonoBehaviour
                 break;
             case State.AttackState:
                 AttackUpdate();
+                break;
+            case State.HitState:
                 break;
         }
 
@@ -117,9 +121,23 @@ public class BeeBehaviour : MonoBehaviour
         GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
         projectile.GetComponent<Projectile>().SetDirection((player.position - transform.position).normalized);
     }
-    //ignore collisions with other enemies
+
+    public void DestroyObject()
+    {
+        Destroy(gameObject);
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Vector2 hitDirection = (collision.transform.position - transform.position).normalized;
+
+            if (hitDirection.y > 0) // Player is jumping on the plant
+            {
+                currentState = State.HitState;
+                anim.Play(BEE_HIT);
+            }
+        }
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
