@@ -12,7 +12,7 @@ public class RisingPlatform : MonoBehaviour
     private Vector2 startPos;
 
 
-
+    //move player with platform
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.name == "Player")
@@ -23,6 +23,7 @@ public class RisingPlatform : MonoBehaviour
         }
 
     }
+    //decouple from player
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.name == "Player")
@@ -32,6 +33,7 @@ public class RisingPlatform : MonoBehaviour
         }
 
     }
+    //set return position
     public void Start()
     {
         startPos = transform.position;
@@ -41,7 +43,7 @@ public class RisingPlatform : MonoBehaviour
     {
         RaisePlatform();
     }
-
+    //move platform if player present, else return to start position after a countdown
     private void RaisePlatform()
     {
         if (!currentlyColliding)

@@ -45,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    // Start is called before the first frame update
+    // instantiate variables
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
@@ -79,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
         body.velocity = new Vector2(dirX * moveSpeed, body.velocity.y);
     }
 
-    //checks what time of jump to perform
+    //checks what type of jump to perform
     private void HandleJump()
     {
         if (Input.GetButtonDown("Jump"))
@@ -133,6 +133,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (dashAvailable)
         {
+            //if (Input.GetButtonDown("Fire1") && CanDash())
             if (Input.GetButton("Fire1") && CanDash())
             {
                 dashCooldown = dashCooldownLength;
@@ -140,12 +141,14 @@ public class PlayerMovement : MonoBehaviour
                 animator.SetTrigger("dash");
                 animator.ResetTrigger("dashRecharged");
 
+                //Dash(facingDirection);
+
                 dashTarget = new Vector2(transform.position.x + (facingDirection.x * adjustedDashDistance), transform.position.y + (facingDirection.y * adjustedDashDistance));
                 Debug.Log(dashTarget);
                 audioSource.PlayOneShot(dashSFX);
                 this.gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
                 dashing = true;
-                //Dash(facingDirection);
+                
             }
         }
         else
@@ -153,7 +156,8 @@ public class PlayerMovement : MonoBehaviour
             if (dashCooldown >= 0)
             {
                 dashCooldown -= Time.deltaTime;
-                if(dashing == true)
+                
+                if(dashing == true) //won't this mean that we dash the whole cooldown time?
                     Dash(dashTarget);
             }
             else
@@ -167,7 +171,7 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    //Check if obstacle in way before dashing
+    //Check if obstacle in way before dashing, adjust dash distance to just short of object
     private bool CanDash()
     {
         bool canDash = true;
@@ -197,14 +201,18 @@ public class PlayerMovement : MonoBehaviour
     private void Dash(Vector2 target)
     {
         //dash in facing direction
+
         //Vector2 target = new Vector2(transform.position.x + (direction.x * adjustedDashDistance), transform.position.y + (direction.y * adjustedDashDistance));
+        //transform.position = Vector2.MoveTowards(transform.position, target, adjustedDashDistance);
+        //audioSource.PlayOneShot(dashSFX);
+
         transform.position = Vector2.MoveTowards(transform.position, target, Time.deltaTime * DashSpeed);
         if (Vector2.Distance(transform.position, target) < 0.2f)
         {
             dashing = false;
             this.gameObject.GetComponent<Rigidbody2D>().gravityScale = 3;
         }
-        //audioSource.PlayOneShot(dashSFX);
+        
     }
 
     //Updates the sprite's animation based on movement
@@ -238,7 +246,7 @@ public class PlayerMovement : MonoBehaviour
         animator.SetInteger("currentMovementState", (int)currentMovementState);
 
     }
-
+    //stop dashing if wall or ground in way
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.tag == "Wall" || collision.gameObject.tag == "Ground")

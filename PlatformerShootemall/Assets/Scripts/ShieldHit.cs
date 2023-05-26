@@ -4,17 +4,7 @@ using UnityEngine;
 
 public class ShieldHit : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //destroy bullets that hit shield
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
