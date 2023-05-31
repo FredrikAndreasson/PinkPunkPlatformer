@@ -97,6 +97,7 @@ public class GhostBehaviour : MonoBehaviour
             if (hitDirection.y > 1)
             {
                 currentState = GhostState.Hit;
+                animator.SetTrigger("Hit");
             }
         }
         if (collision.gameObject.CompareTag("Enemy"))
