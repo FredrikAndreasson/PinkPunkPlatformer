@@ -15,7 +15,8 @@ public class GhostBehaviour : MonoBehaviour
     public enum GhostState
     {
         Idle,
-        Chasing
+        Chasing,
+        Hit
     }
 
     void Start()
@@ -38,16 +39,21 @@ public class GhostBehaviour : MonoBehaviour
         {
             if (playerFacingGhost)
             {
-                ChangeState(GhostState.Idle);
+                currentState = GhostState.Idle;
+                animator.ResetTrigger("Appear");
+                animator.ResetTrigger("Disappear");
             }
             else
             {
-                ChangeState(GhostState.Chasing);
+                currentState = GhostState.Chasing;
+                animator.ResetTrigger("Idle");
             }
         }
         else
         {
-            ChangeState(GhostState.Idle);
+            currentState = GhostState.Idle;
+            animator.ResetTrigger("Appear");
+            animator.ResetTrigger("Disappear");
         }
     }
 
@@ -64,19 +70,35 @@ public class GhostBehaviour : MonoBehaviour
         }
     }
 
-    private void ChangeState(GhostState newState)
+
+    public void OnAppearAnimationEnd()
     {
-        currentState = newState;
-        animator.SetTrigger(newState.ToString());
+        animator.ResetTrigger("Appear");
+        animator.SetTrigger("Dissapear");
     }
 
-    public void Reset()
+    public void OnDissapearAnimationEnd()
     {
-        
+        animator.ResetTrigger("Dissapear");
+        animator.SetTrigger("Appear");
+    }
+
+    public void DestroyObject()
+    {
+        Destroy(gameObject);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Vector2 hitDirection = (collision.transform.position - transform.position).normalized;
+
+            if (hitDirection.y > 0)
+            {
+                currentState = GhostState.Hit;
+            }
+        }
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());

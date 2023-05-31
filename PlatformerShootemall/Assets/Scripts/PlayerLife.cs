@@ -1,10 +1,13 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static GhostBehaviour;
 
 public class PlayerLife : MonoBehaviour
 {
     private Animator animator;
     private Rigidbody2D body;
+    private bool dead = false;
 
     public int health = 5;
     public int maxHealth = 5;
@@ -14,24 +17,35 @@ public class PlayerLife : MonoBehaviour
     [SerializeField] private AudioClip deathSFX;
     [SerializeField] private AudioClip getHitSFX;
     [SerializeField] private Transform shield;
+    [SerializeField] private IntEventSO _HealthUpdatedEvent;
+    [SerializeField] private IntEventSO _DamageEvent;
   
     void Start()
     {
         animator = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
+
+        _HealthUpdatedEvent.Event += UpdateHealth;
     }
 
-    //If hitting a trap
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
         switch (collision.gameObject.tag)
         {
             case "Enemy":
+                Vector2 hitDirection = (collision.transform.position - transform.position).normalized;
+
+                if (hitDirection.y > 0)
+                {
+                    _DamageEvent.Invoke(1);
+                    GetHit(collision.gameObject);
+                }
+                break;
             case "Bullet":
             case "Trap":
-                DealDamage(collision.gameObject);
+                _DamageEvent.Invoke(1);
+                GetHit(collision.gameObject);
                 break;
             case "Level edge":
                 Die();
@@ -40,23 +54,35 @@ public class PlayerLife : MonoBehaviour
                 break;
         }
     }
-    //deal damage or kill player if not enough health left
-    private void DealDamage(GameObject gameObject)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        //update hitpoints
-        //todo: update with relative damage from gameobject (remove hardcoding)
-        Debug.Log("Hit by " + gameObject.name);
-        health -= 1;
-        if (health <= 0)
+        //filter out phantom collision triggers from colliders that are not meant to trigger
+        if (collider.isActiveAndEnabled && (collider.GetType() == typeof(CircleCollider2D)))
         {
-            Die();
-        }
-        else
-        {
-            GetHit(gameObject);
+            switch (collider.gameObject.tag)
+            {
+                case "Fire":
+                    _DamageEvent.Invoke(1);
+                    GetHit(collider.gameObject);
+                    break;
+                default:
+                    break;
+            }
         }
     }
-    //trigger animation, sound and knockback effect
+    //deal damage or kill player if not enough health left
+    public void UpdateHealth(int health)
+    {
+        this.health = health;
+    }
+    private void Update()
+    {
+        if (health <= 0 && !dead)
+        {
+            dead = true;
+            Die();
+        }
+    }
 
     public void GetHit(GameObject gameObject)
     {

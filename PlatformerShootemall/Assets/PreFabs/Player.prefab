@@ -469,6 +469,8 @@ MonoBehaviour:
   deathSFX: {fileID: 8300000, guid: b2f05341da5cbba4c97b07cd83d5f23c, type: 3}
   getHitSFX: {fileID: 8300000, guid: c4d473b324019aa45a7a5407bf7c2737, type: 3}
   shield: {fileID: 5790647772124570360}
+  _HealthUpdatedEvent: {fileID: 11400000, guid: 5d55b889c0c5f5e4599e7e5184d39d5f, type: 2}
+  _DamageEvent: {fileID: 11400000, guid: 21352d649ffdae4499aff137ce8e795e, type: 2}
 --- !u!95 &7596331839595987520
 Animator:
   serializedVersion: 5
@@ -600,3 +602,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collectedFruit: 0
   collectSFX: {fileID: 8300000, guid: c22f28672d87d974cabd6de35c9ed7e5, type: 3}
+  _ScoreUpdatedEvent: {fileID: 11400000, guid: c4b5f09e2282265439ccb571f17a863c, type: 2}
+  _ScoreEvent: {fileID: 11400000, guid: 493f807e9dcaddb4193a3d6096ba50b8, type: 2}

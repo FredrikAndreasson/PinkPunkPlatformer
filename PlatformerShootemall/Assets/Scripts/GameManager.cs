@@ -5,41 +5,38 @@ using UnityEngine.UI;
 using System;
 public class GameManager : Singleton<GameManager>
 {
-    public event Action<int> ScoreUpdated;
-    public event Action HealthUpdated;
+    public IntEventSO _ScoreUpdatedEvent;
+    public IntEventSO _ScoreAddedEvent;
+    public IntEventSO _HealthUpdatedEvent;
+    public IntEventSO _HealthDamagedEvent;
 
-    public int score = 0;
+    private int score = 0;
 
-    public int health = 3; 
+    public int health = 5;
 
-    public void AddScore(int _score)
+    private void Start()
+    {
+        _ScoreAddedEvent.Event += UpdateScore;
+        _HealthDamagedEvent.Event += UpdateHealth;
+    }
+    protected override void OnDestroy()
+    {
+        _ScoreAddedEvent.Event -= UpdateScore;
+        _HealthDamagedEvent.Event -= UpdateHealth;
+        base.OnDestroy();
+    }
+
+    public void UpdateScore(int _score)
     {
         score += _score;
-        ScoreUpdated.Invoke(score);
-
-        //scoreText.text = "Score: " + score; // Seperate UI script should not subcribe and update itself 
+        _ScoreUpdatedEvent?.Invoke(score);
     }
 
-    public void RemoveScore(int _score)
+    public void UpdateHealth(int damage)
     {
-        score -= _score;
-        ScoreUpdated?.Invoke(score);
+        health -= damage;
+        _HealthUpdatedEvent?.Invoke(health);
 
-        //scoreText.text = "Score: " + score;
-
-    }
-
-    public void TakeDamage()
-    {
-        health--;
-        HealthUpdated?.Invoke();
-
-    }
-
-    public void Heal()
-    {
-        health++;
-        HealthUpdated?.Invoke();
     }
 
 

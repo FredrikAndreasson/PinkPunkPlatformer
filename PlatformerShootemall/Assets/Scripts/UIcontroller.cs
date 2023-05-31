@@ -6,11 +6,14 @@ using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 //observer that updates UI
-public class UIcontroller : Singleton<UIcontroller>
+public class UIcontroller : MonoBehaviour
 {
     [SerializeField] private Text scoreText;
     [SerializeField] private GameObject uiDashCooldown;
     [SerializeField] private GameObject player;
+    [SerializeField] private IntEventSO _scoreEvent;
+    [SerializeField] private IntEventSO _healthEvent;
+
     public Image[] hearts;
     public Sprite dashCharging;
     public Sprite dashReady;
@@ -20,10 +23,20 @@ public class UIcontroller : Singleton<UIcontroller>
 
     private int score = 0;
 
+    private void Start()
+    {
+        _scoreEvent.Event += UpdateScore;
+        _healthEvent.Event += UpdateHealth;
+    }
+
+    private void OnDestroy()
+    {
+        _scoreEvent.Event -= UpdateScore;
+        _healthEvent.Event -= UpdateHealth;
+    }
+
     private void Update()
     {
-        UpdateHealth();
-        UpdateScore();
         UpdateDash();
     }
     //make sprite reflect cooldown status
@@ -42,20 +55,14 @@ public class UIcontroller : Singleton<UIcontroller>
 
     }
     //check score and update UI
-    private void UpdateScore()
+    public void UpdateScore(int score)
     {
-        int score = player.GetComponent<ItemCollector>().collectedFruit;
         scoreText.text = "Fruit: " + score;
     }
     //check health and update UI
-    private void UpdateHealth()
+    public void UpdateHealth(int health)
     {
-        int health = player.GetComponent<PlayerLife>().health;
         int maxHealth = player.GetComponent<PlayerLife>().maxHealth;
-        if (health > maxHealth)
-        {
-            health = maxHealth;
-        }
         for (int i = 0; i < hearts.Length; i++)
         {
             //number of full hearts = current health
