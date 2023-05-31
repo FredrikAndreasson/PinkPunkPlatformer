@@ -34,9 +34,9 @@ public class PlayerLife : MonoBehaviour
         switch (collision.gameObject.tag)
         {
             case "Enemy":
-                Vector2 hitDirection = (collision.transform.position - transform.position).normalized;
-
-                if (hitDirection.y > 0)
+                Vector2 hitDirection = (collision.transform.position - transform.position);
+                Debug.Log(hitDirection.y);
+                if (hitDirection.y > -1)
                 {
                     _DamageEvent.Invoke(1);
                     GetHit(collision.gameObject);

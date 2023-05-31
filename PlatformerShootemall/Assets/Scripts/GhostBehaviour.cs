@@ -92,9 +92,9 @@ public class GhostBehaviour : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Vector2 hitDirection = (collision.transform.position - transform.position).normalized;
+            Vector2 hitDirection = (collision.transform.position - transform.position);
 
-            if (hitDirection.y > 0)
+            if (hitDirection.y > 1)
             {
                 currentState = GhostState.Hit;
             }
