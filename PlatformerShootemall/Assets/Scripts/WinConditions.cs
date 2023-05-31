@@ -22,7 +22,7 @@ public class WinConditions : MonoBehaviour
     {
         int remainingFruit = GameObject.FindGameObjectsWithTag("Fruit").Length;
         int collectedFruit = totalFruit - remainingFruit;
-        Debug.Log("required fruit:" + requiredFruit + " current fruit:" + collectedFruit + " total fruit:" + totalFruit);
+        //Debug.Log("required fruit:" + requiredFruit + " current fruit:" + collectedFruit + " total fruit:" + totalFruit);
         //Authenticate
         if (collectedFruit < requiredFruit)
         {

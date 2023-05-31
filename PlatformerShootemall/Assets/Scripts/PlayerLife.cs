@@ -31,7 +31,6 @@ public class PlayerLife : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
         switch (collision.gameObject.tag)
         {
             case "Enemy":
@@ -44,9 +43,6 @@ public class PlayerLife : MonoBehaviour
                 }
                 break;
             case "Bullet":
-                _DamageEvent.Invoke(1);
-                GetHit(collision.gameObject);
-                break;
             case "Trap":
                 _DamageEvent.Invoke(1);
                 GetHit(collision.gameObject);
@@ -56,6 +52,22 @@ public class PlayerLife : MonoBehaviour
                 break;
             default:
                 break;
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        //filter out phantom collision triggers from colliders that are not meant to trigger
+        if (collider.isActiveAndEnabled && (collider.GetType() == typeof(CircleCollider2D)))
+        {
+            switch (collider.gameObject.tag)
+            {
+                case "Fire":
+                    _DamageEvent.Invoke(1);
+                    GetHit(collider.gameObject);
+                    break;
+                default:
+                    break;
+            }
         }
     }
     //deal damage or kill player if not enough health left
