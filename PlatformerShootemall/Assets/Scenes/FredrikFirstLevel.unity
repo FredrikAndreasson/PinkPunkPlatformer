@@ -125113,7 +125113,7 @@ MonoBehaviour:
   _ScoreAddedEvent: {fileID: 11400000, guid: 493f807e9dcaddb4193a3d6096ba50b8, type: 2}
   _HealthUpdatedEvent: {fileID: 11400000, guid: 5d55b889c0c5f5e4599e7e5184d39d5f, type: 2}
   _HealthDamagedEvent: {fileID: 11400000, guid: 21352d649ffdae4499aff137ce8e795e, type: 2}
-  health: 3
+  health: 5
 --- !u!4 &1840253371
 Transform:
   m_ObjectHideFlags: 0

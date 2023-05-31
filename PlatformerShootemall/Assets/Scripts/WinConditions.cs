@@ -6,7 +6,7 @@ using UnityEngine;
 public class WinConditions : MonoBehaviour
 {
     private int totalFruit;
-    private int fruitLimit;
+    private int requiredFruit;
     [SerializeField] private TextMeshPro text;
 
     [SerializeField] private Fire[] fires;
@@ -14,21 +14,23 @@ public class WinConditions : MonoBehaviour
     private void Start()
     {
         totalFruit = GameObject.FindGameObjectsWithTag("Fruit").Length;
-        fruitLimit = totalFruit / 2;
-        text.text = "You need a total of: " + fruitLimit + " fruit to pass";
+        requiredFruit = totalFruit / 2;
+        text.text = "You need a total of: " + requiredFruit + " fruit to pass";
     }
 
     void Update()
     {
-        Debug.Log("fruit limit:" + fruitLimit + " current fruit:" + GameObject.FindGameObjectsWithTag("Fruit").Length + " total fruit:" + totalFruit);
+        int remainingFruit = GameObject.FindGameObjectsWithTag("Fruit").Length;
+        int collectedFruit = totalFruit - remainingFruit;
+        Debug.Log("required fruit:" + requiredFruit + " current fruit:" + collectedFruit + " total fruit:" + totalFruit);
         //Authenticate
-        if (GameObject.FindGameObjectsWithTag("Fruit").Length > fruitLimit)
+        if (collectedFruit < requiredFruit)
         {
             return;
         }
 
         //Log
-        Log(totalFruit, 1);
+        Log(totalFruit, totalFruit-remainingFruit);
 
         //Authorize
         Authorize();

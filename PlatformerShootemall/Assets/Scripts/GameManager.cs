@@ -29,7 +29,7 @@ public class GameManager : Singleton<GameManager>
     public void UpdateScore(int _score)
     {
         score += _score;
-        _ScoreUpdatedEvent.Invoke(score);
+        _ScoreUpdatedEvent?.Invoke(score);
     }
 
     public void UpdateHealth(int damage)
