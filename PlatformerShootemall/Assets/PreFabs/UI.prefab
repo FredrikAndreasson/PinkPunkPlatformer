@@ -719,6 +719,8 @@ MonoBehaviour:
   scoreText: {fileID: 4944042457249553502}
   uiDashCooldown: {fileID: 4944042457342778583}
   player: {fileID: 0}
+  _scoreEvent: {fileID: 11400000, guid: c4b5f09e2282265439ccb571f17a863c, type: 2}
+  _healthEvent: {fileID: 11400000, guid: 5d55b889c0c5f5e4599e7e5184d39d5f, type: 2}
   hearts:
   - {fileID: 4944042458075228198}
   - {fileID: 4944042458864588797}
